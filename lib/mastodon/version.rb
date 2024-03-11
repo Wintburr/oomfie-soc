@@ -25,7 +25,7 @@ module Mastodon
     end
 
     def build_metadata
-      ['chuckya', ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
+      ['chuckya+oomfcity', ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
     end
 
     def to_a
@@ -44,7 +44,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'TheEssem/mastodon')
+      ENV.fetch('GITHUB_REPOSITORY', 'Luttyz/oomfie-soc')
     end
 
     def source_base_url
