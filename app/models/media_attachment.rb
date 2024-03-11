@@ -39,12 +39,12 @@ class MediaAttachment < ApplicationRecord
 
   MAX_DESCRIPTION_LENGTH = 1_500
 
-  IMAGE_LIMIT = (ENV['MAX_IMAGE_SIZE'] || 16.megabytes).to_i
-  VIDEO_LIMIT = (ENV['MAX_VIDEO_SIZE'] || 99.megabytes).to_i
+  IMAGE_LIMIT = (ENV['MAX_IMAGE_SIZE'] || 100.megabytes).to_i
+  VIDEO_LIMIT = (ENV['MAX_VIDEO_SIZE'] || 300.megabytes).to_i
 
-  MAX_VIDEO_MATRIX_LIMIT = 8_294_400 # 3840x2160px
+  MAX_VIDEO_MATRIX_LIMIT = 36_000_000 # 6000x6000px
   MAX_VIDEO_FRAME_RATE   = 120
-  MAX_VIDEO_FRAMES       = 36_000 # Approx. 5 minutes at 120 fps
+  MAX_VIDEO_FRAMES       = 72_000 # 10 minutes at 120 fps
 
   IMAGE_FILE_EXTENSIONS = %w(.jpg .jpeg .png .gif .webp .heic .heif .avif).freeze
   VIDEO_FILE_EXTENSIONS = %w(.webm .mp4 .m4v .mov).freeze
@@ -64,13 +64,13 @@ class MediaAttachment < ApplicationRecord
   AUDIO_MIME_TYPES             = %w(audio/wave audio/wav audio/x-wav audio/x-pn-wave audio/vnd.wave audio/ogg audio/vorbis audio/mpeg audio/mp3 audio/flac audio/aac audio/m4a audio/x-m4a audio/mp4 audio/3gpp video/x-ms-asf audio/opus).freeze
 
   BLURHASH_OPTIONS = {
-    x_comp: 4,
-    y_comp: 4,
+    x_comp: 8,
+    y_comp: 8,
   }.freeze
 
   IMAGE_STYLES = {
     original: {
-      pixels: 8_294_400, # 3840x2160px
+      pixels: 36_000_000, # 3840x2160px
       file_geometry_parser: FastGeometryParser,
     }.freeze,
 
@@ -81,6 +81,7 @@ class MediaAttachment < ApplicationRecord
     }.freeze,
   }.freeze
 
+# i would change this to webp if i could
   IMAGE_CONVERTED_STYLES = {
     original: {
       format: 'jpeg',
@@ -99,13 +100,13 @@ class MediaAttachment < ApplicationRecord
     convert_options: {
       output: {
         'loglevel' => 'fatal',
-        'preset' => 'veryfast',
+        'preset' => 'faster',
         'movflags' => 'faststart', # Move metadata to start of file so playback can begin before download finishes
         'pix_fmt' => 'yuv420p', # Ensure color space for cross-browser compatibility
         'vf' => 'crop=floor(iw/2)*2:floor(ih/2)*2', # h264 requires width and height to be even. Crop instead of scale to avoid blurring
         'c:v' => 'h264',
         'c:a' => 'aac',
-        'b:a' => '192k',
+        'b:a' => '256k',
         'map_metadata' => '-1',
         'frames:v' => MAX_VIDEO_FRAMES,
       }.freeze,
@@ -148,12 +149,12 @@ class MediaAttachment < ApplicationRecord
 
   AUDIO_STYLES = {
     original: {
-      format: 'mp3',
-      content_type: 'audio/mpeg',
+      format: 'opus',
+      content_type: 'audio/opus',
       convert_options: {
         output: {
           'loglevel' => 'fatal',
-          'q:a' => 2,
+          'q:a' => 10,
         }.freeze,
       }.freeze,
     }.freeze,
@@ -171,7 +172,7 @@ class MediaAttachment < ApplicationRecord
   DEFAULT_STYLES = [:original].freeze
 
   GLOBAL_CONVERT_OPTIONS = {
-    all: '-quality 90 +profile "!icc,*" +set date:modify +set date:create +set date:timestamp -define jpeg:dct-method=float',
+    all: '-quality 80 +profile "!icc,*" +set date:modify +set date:create +set date:timestamp -define jpeg:dct-method=float',
   }.freeze
 
   belongs_to :account,          inverse_of: :media_attachments, optional: true
