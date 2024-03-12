@@ -154,7 +154,8 @@ class MediaAttachment < ApplicationRecord
       convert_options: {
         output: {
           'loglevel' => 'fatal',
-          'q:a' => 10,
+          'b:a' => '256k',
+          'frame_duration' => '60',
         }.freeze,
       }.freeze,
     }.freeze,
