@@ -4,12 +4,12 @@ module Account::Avatar
   extend ActiveSupport::Concern
 
   IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].freeze
-  LIMIT = 2.megabytes
+  LIMIT = 20.megabytes
 
   class_methods do
     def avatar_styles(file)
-      styles = { original: { geometry: '400x400#', file_geometry_parser: FastGeometryParser } }
-      styles[:static] = { geometry: '400x400#', format: 'png', convert_options: '-coalesce', file_geometry_parser: FastGeometryParser } if file.content_type == 'image/gif'
+      styles = { original: { geometry: '700x700#', file_geometry_parser: FastGeometryParser } }
+      styles[:static] = { geometry: '700x700#', format: 'png', convert_options: '-coalesce', file_geometry_parser: FastGeometryParser } if file.content_type == 'image/gif'
       styles
     end
 
