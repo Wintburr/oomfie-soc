@@ -44,7 +44,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'Luttyz/oomfie-soc')
+      ENV.fetch('GITHUB_REPOSITORY', 'Wintburr/oomfie-soc')
     end
 
     def source_base_url
