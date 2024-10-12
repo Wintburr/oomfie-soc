@@ -18,9 +18,9 @@ en-GB:
     pin_errors:
       following: You must be already following the person you want to endorse
     posts:
-      one: Grong
-      other: Grongs
-    posts_tab_heading: Grongs
+      one: Post
+      other: Posts
+    posts_tab_heading: Posts
   admin:
     account_actions:
       action: Perform action
@@ -148,7 +148,7 @@ en-GB:
         targeted_reports: Reported by others
       silence: Limit
       silenced: Limited
-      statuses: Grongs
+      statuses: Posts
       strikes: Previous strikes
       subscribe: Subscribe
       suspend: Suspend
@@ -197,7 +197,7 @@ en-GB:
         destroy_email_domain_block: Delete Email Domain Block
         destroy_instance: Purge Domain
         destroy_ip_block: Delete IP rule
-        destroy_status: Delete Grong
+        destroy_status: Delete Post
         destroy_unavailable_domain: Delete Unavailable Domain
         destroy_user_role: Destroy Role
         disable_2fa_user: Disable 2FA
@@ -228,12 +228,8 @@ en-GB:
         update_custom_emoji: Update Custom Emoji
         update_domain_block: Update Domain Block
         update_ip_block: Update IP rule
-<<<<<<< HEAD
-        update_status: Update Grong
-=======
         update_report: Update Report
         update_status: Update Post
->>>>>>> TheEssem/main
         update_user_role: Update Role
       actions:
         approve_appeal_html: "%{name} approved moderation decision appeal from %{target}"
@@ -261,7 +257,7 @@ en-GB:
         destroy_email_domain_block_html: "%{name} unblocked email domain %{target}"
         destroy_instance_html: "%{name} purged domain %{target}"
         destroy_ip_block_html: "%{name} deleted rule for IP %{target}"
-        destroy_status_html: "%{name} removed Grong by %{target}"
+        destroy_status_html: "%{name} removed post by %{target}"
         destroy_unavailable_domain_html: "%{name} stopped delivery to domain %{target}"
         destroy_user_role_html: "%{name} deleted %{target} role"
         disable_2fa_user_html: "%{name} disabled two factor requirement for user %{target}"
@@ -292,13 +288,15 @@ en-GB:
         update_custom_emoji_html: "%{name} updated emoji %{target}"
         update_domain_block_html: "%{name} updated domain block for %{target}"
         update_ip_block_html: "%{name} changed rule for IP %{target}"
-        update_status_html: "%{name} updated Grong by %{target}"
+        update_report_html: "%{name} updated report %{target}"
+        update_status_html: "%{name} updated post by %{target}"
         update_user_role_html: "%{name} changed %{target} role"
       deleted_account: deleted account
       empty: No logs found.
       filter_by_action: Filter by action
       filter_by_user: Filter by user
       title: Audit log
+      unavailable_instance: "(domain name unavailable)"
     announcements:
       destroyed_msg: Announcement successfully deleted!
       edit:
@@ -411,7 +409,7 @@ en-GB:
         create: Create block
         hint: The domain block will not prevent creation of account entries in the database, but will retroactively and automatically apply specific moderation methods on those accounts.
         severity:
-          desc_html: "<strong>Limit</strong> will make Grongs from accounts at this domain invisible to anyone who isn't following them. <strong>Suspend</strong> will remove all content, media, and profile data for this domain's accounts from your server. Use <strong>None</strong> if you just want to reject media files."
+          desc_html: "<strong>Limit</strong> will make posts from accounts at this domain invisible to anyone who isn't following them. <strong>Suspend</strong> will remove all content, media, and profile data for this domain's accounts from your server. Use <strong>None</strong> if you just want to reject media files."
           noop: None
           silence: Limit
           suspend: Suspend
@@ -514,7 +512,7 @@ en-GB:
         instance_languages_dimension: Top languages
         instance_media_attachments_measure: stored media attachments
         instance_reports_measure: reports about them
-        instance_statuses_measure: stored Grongs
+        instance_statuses_measure: stored posts
       delivery:
         all: All
         clear: Clear delivery errors
@@ -574,11 +572,11 @@ en-GB:
     relays:
       add_new: Add new relay
       delete: Delete
-      description_html: A <strong>federation relay</strong> is an intermediary server that exchanges large volumes of public grongs between servers that subscribe and publish to it. <strong>It can help small and medium servers discover content from the fediverse</strong>, which would otherwise require local users manually following other people on remote servers.
+      description_html: A <strong>federation relay</strong> is an intermediary server that exchanges large volumes of public posts between servers that subscribe and publish to it. <strong>It can help small and medium servers discover content from the fediverse</strong>, which would otherwise require local users manually following other people on remote servers.
       disable: Disable
       disabled: Disabled
       enable: Enable
-      enable_hint: Once enabled, your server will subscribe to all public grongs from this relay, and will begin sending this server's public grongs to it.
+      enable_hint: Once enabled, your server will subscribe to all public posts from this relay, and will begin sending this server's public posts to it.
       enabled: Enabled
       inbox_url: Relay URL
       pending: Waiting for relay's approval
@@ -598,8 +596,8 @@ en-GB:
       action_log: Audit log
       action_taken_by: Action taken by
       actions:
-        delete_description_html: The reported grongs will be deleted and a strike will be recorded to help you escalate on future infractions by the same account.
-        mark_as_sensitive_description_html: The media in the reported grongs will be marked as sensitive and a strike will be recorded to help you escalate on future infractions by the same account.
+        delete_description_html: The reported posts will be deleted and a strike will be recorded to help you escalate on future infractions by the same account.
+        mark_as_sensitive_description_html: The media in the reported posts will be marked as sensitive and a strike will be recorded to help you escalate on future infractions by the same account.
         other_description_html: See more options for controlling the account's behaviour and customise communication to the reported account.
         resolve_description_html: No action will be taken against the reported account, no strike recorded, and the report will be closed.
         silence_description_html: The account will be visible only to those who already follow it or manually look it up, severely limiting its reach. Can always be reverted. Closes all reports against this account.
@@ -624,7 +622,7 @@ en-GB:
       confirm: Confirm
       confirm_action: Confirm moderation action against @%{acct}
       created_at: Reported
-      delete_and_resolve: Delete grongs
+      delete_and_resolve: Delete posts
       forwarded: Forwarded
       forwarded_replies_explanation: This report is from a remote user and about remote content. It has been forwarded to you because the reported content is in reply to one of your users.
       forwarded_to: Forwarded to %{domain}
@@ -656,13 +654,13 @@ en-GB:
       statuses_description_html: Offending content will be cited in communication with the reported account
       summary:
         action_preambles:
-          delete_html: 'You are about to <strong>remove</strong> some of <strong>@%{acct}</strong>''s grongs. This will:'
-          mark_as_sensitive_html: 'You are about to <strong>mark</strong> some of <strong>@%{acct}</strong>''s grongs as <strong>sensitive</strong>. This will:'
+          delete_html: 'You are about to <strong>remove</strong> some of <strong>@%{acct}</strong>''s posts. This will:'
+          mark_as_sensitive_html: 'You are about to <strong>mark</strong> some of <strong>@%{acct}</strong>''s posts as <strong>sensitive</strong>. This will:'
           silence_html: 'You are about to <strong>limit</strong> <strong>@%{acct}</strong>''s account. This will:'
           suspend_html: 'You are about to <strong>suspend</strong> <strong>@%{acct}</strong>''s account. This will:'
         actions:
-          delete_html: Remove the offending grongs
-          mark_as_sensitive_html: Mark the offending grongs' media as sensitive
+          delete_html: Remove the offending posts
+          mark_as_sensitive_html: Mark the offending posts' media as sensitive
           silence_html: Severely limit <strong>@%{acct}</strong>'s reach by making their profile and contents only visible to people already following them or manually looking it profile up
           suspend_html: Suspend <strong>@%{acct}</strong>, making their profile and contents inaccessible and impossible to interact with
         close_report: 'Mark report #%{id} as resolved'
@@ -794,7 +792,7 @@ en-GB:
         warning_hint: We recommend using “Approval required for sign up” unless you are confident your moderation team can handle spam and malicious registrations in a timely fashion.
       security:
         authorized_fetch: Require authentication from federated servers
-        authorized_fetch_hint: Requiring authentication from federated servers enables stricter enforcement of both user-level and server-level blocks. However, this comes at the cost of a performance penalty, reduces the reach of your replies, and may introduce compatibility issues with some federated services. In addition, this will not prevent dedicated actors from fetching your public grongs and accounts.
+        authorized_fetch_hint: Requiring authentication from federated servers enables stricter enforcement of both user-level and server-level blocks. However, this comes at the cost of a performance penalty, reduces the reach of your replies, and may introduce compatibility issues with some federated services. In addition, this will not prevent dedicated actors from fetching your public posts and accounts.
         authorized_fetch_overridden_hint: You are currently unable to change this setting because it is overridden by an environment variable.
         federation_authentication: Federation authentication enforcement
       title: Server settings
@@ -829,20 +827,20 @@ en-GB:
       media:
         title: Media
       metadata: Metadata
-      no_status_selected: No grongs were changed as none were selected
-      open: Open grong
-      original_status: Original grong
+      no_status_selected: No posts were changed as none were selected
+      open: Open post
+      original_status: Original post
       reblogs: Reblogs
-      status_changed: grong changed
-      title: Account grongs
+      status_changed: Post changed
+      title: Account posts
       trending: Trending
       visibility: Visibility
       with_media: With media
     strikes:
       actions:
-        delete_statuses: "%{name} deleted %{target}'s grongs"
+        delete_statuses: "%{name} deleted %{target}'s posts"
         disable: "%{name} froze %{target}'s account"
-        mark_statuses_as_sensitive: "%{name} marked %{target}'s grongs as sensitive"
+        mark_statuses_as_sensitive: "%{name} marked %{target}'s posts as sensitive"
         none: "%{name} sent a warning to %{target}"
         sensitive: "%{name} marked %{target}'s account as sensitive"
         silence: "%{name} limited %{target}'s account"
@@ -922,15 +920,11 @@ en-GB:
       links:
         allow: Allow link
         allow_provider: Allow publisher
-<<<<<<< HEAD
-        description_html: These are links that are currently being shared a lot by accounts that your server sees grongs from. It can help your users find out what's going on in the world. No links are displayed publicly until you approve the publisher. You can also allow or reject individual links.
-=======
         confirm_allow: Are you sure you want to allow selected links?
         confirm_allow_provider: Are you sure you want to allow selected providers?
         confirm_disallow: Are you sure you want to disallow selected links?
         confirm_disallow_provider: Are you sure you want to disallow selected providers?
         description_html: These are links that are currently being shared a lot by accounts that your server sees posts from. It can help your users find out what's going on in the world. No links are displayed publicly until you approve the publisher. You can also allow or reject individual links.
->>>>>>> TheEssem/main
         disallow: Disallow link
         disallow_provider: Disallow publisher
         no_link_selected: No links were changed as none were selected
@@ -951,26 +945,21 @@ en-GB:
         title: Publishers
       rejected: Rejected
       statuses:
-        allow: Allow grong
+        allow: Allow post
         allow_account: Allow author
-<<<<<<< HEAD
-        description_html: These are grongs that your server knows about that are currently being shared and favourited a lot at the moment. It can help your new and returning users to find more people to follow. No grongs are displayed publicly until you approve the author, and the author allows their account to be suggested to others. You can also allow or reject individual grongs.
-        disallow: Disallow grong
-=======
         confirm_allow: Are you sure you want to allow selected statuses?
         confirm_allow_account: Are you sure you want to allow selected accounts?
         confirm_disallow: Are you sure you want to disallow selected statuses?
         confirm_disallow_account: Are you sure you want to disallow selected accounts?
         description_html: These are posts that your server knows about that are currently being shared and favourited a lot at the moment. It can help your new and returning users to find more people to follow. No posts are displayed publicly until you approve the author, and the author allows their account to be suggested to others. You can also allow or reject individual posts.
         disallow: Disallow post
->>>>>>> TheEssem/main
         disallow_account: Disallow author
-        no_status_selected: No trending grongs were changed as none were selected
+        no_status_selected: No trending posts were changed as none were selected
         not_discoverable: Author has not opted-in to being discoverable
         shared_by:
           one: Shared or favourited one time
           other: Shared and favourited %{friendly_count} times
-        title: Trending grongs
+        title: Trending posts
       tags:
         current_score: Current score %{score}
         dashboard:
@@ -979,7 +968,7 @@ en-GB:
           tag_servers_dimension: Top servers
           tag_servers_measure: different servers
           tag_uses_measure: total uses
-        description_html: These are hashtags that are currently appearing in a lot of grongs that your server sees. It can help your users find out what people are talking the most about at the moment. No hashtags are displayed publicly until you approve them.
+        description_html: These are hashtags that are currently appearing in a lot of posts that your server sees. It can help your users find out what people are talking the most about at the moment. No hashtags are displayed publicly until you approve them.
         listable: Can be suggested
         no_tag_selected: No tags were changed as none were selected
         not_listable: Won't be suggested
@@ -1001,6 +990,7 @@ en-GB:
       delete: Delete
       edit_preset: Edit warning preset
       empty: You haven't defined any warning presets yet.
+      title: Warning presets
     webhooks:
       add_new: Add endpoint
       delete: Delete
@@ -1027,9 +1017,9 @@ en-GB:
       subject: Registrations for %{instance} have been automatically switched to requiring approval
     new_appeal:
       actions:
-        delete_statuses: to delete their grongs
+        delete_statuses: to delete their posts
         disable: to freeze their account
-        mark_statuses_as_sensitive: to mark their grongs as sensitive
+        mark_statuses_as_sensitive: to mark their posts as sensitive
         none: a warning
         sensitive: to mark their account as sensitive
         silence: to limit their account
@@ -1055,7 +1045,7 @@ en-GB:
       new_trending_links:
         title: Trending links
       new_trending_statuses:
-        title: Trending grongs
+        title: Trending posts
       new_trending_tags:
         title: Trending hashtags
       subject: New trends up for review on %{instance}
@@ -1084,7 +1074,7 @@ en-GB:
     unsubscribe: Unsubscribe
     view: 'View:'
     view_profile: View profile
-    view_status: View grong
+    view_status: View post
   applications:
     created: Application successfully created
     destroyed: Application successfully deleted
@@ -1114,7 +1104,7 @@ en-GB:
     description:
       prefix_invited_by_user: "@%{name} invites you to join this server of Mastodon!"
       prefix_sign_up: Sign up on Mastodon today!
-      suffix: With an account, you will be able to follow people, grong updates and exchange messages with users from any Mastodon server and more!
+      suffix: With an account, you will be able to follow people, post updates and exchange messages with users from any Mastodon server and more!
     didnt_get_confirmation: Didn't receive a confirmation link?
     dont_have_your_security_key: Don't have your security key?
     forgot_password: Forgot your password?
@@ -1214,17 +1204,10 @@ en-GB:
     warning:
       before: 'Before proceeding, please read these notes carefully:'
       caches: Content that has been cached by other servers may persist
-<<<<<<< HEAD
-      data_removal: Your grongs and other data will be permanently removed
-      email_change_html: You can <a href="%{path}">change your e-mail address</a> without deleting your account
-      email_contact_html: If it still doesn't arrive, you can e-mail <a href="mailto:%{email}">%{email}</a> for help
-      email_reconfirmation_html: If you are not receiving the confirmation e-mail, you can <a href="%{path}">request it again</a>
-=======
       data_removal: Your posts and other data will be permanently removed
       email_change_html: You can <a href="%{path}">change your email address</a> without deleting your account
       email_contact_html: If it still doesn't arrive, you can email <a href="mailto:%{email}">%{email}</a> for help
       email_reconfirmation_html: If you are not receiving the confirmation email, you can <a href="%{path}">request it again</a>
->>>>>>> TheEssem/main
       irreversible: You will not be able to restore or reactivate your account
       more_details_html: For more details, see the <a href="%{terms_path}">privacy policy</a>.
       username_available: Your username will become available again
@@ -1245,13 +1228,13 @@ en-GB:
       description_html: These are actions taken against your account and warnings that have been sent to you by the staff of %{instance}.
       recipient: Addressed to
       reject_appeal: Reject appeal
-      status: 'Grong #%{id}'
-      status_removed: Grong already removed from system
+      status: 'Post #%{id}'
+      status_removed: Post already removed from system
       title: "%{action} from %{date}"
       title_actions:
-        delete_statuses: Grong removal
+        delete_statuses: Post removal
         disable: Freezing of account
-        mark_statuses_as_sensitive: Marking of grongs as sensitive
+        mark_statuses_as_sensitive: Marking of posts as sensitive
         none: Warning
         sensitive: Marking of account as sensitive
         silence: Limitation of account
@@ -1261,7 +1244,7 @@ en-GB:
       your_appeal_rejected: Your appeal has been rejected
   edit_profile:
     basic_information: Basic information
-    hint_html: "<strong>Customise what people see on your public profile and next to your grongs.</strong> Other people are more likely to follow you back and interact with you when you have a filled out profile and a profile picture."
+    hint_html: "<strong>Customise what people see on your public profile and next to your posts.</strong> Other people are more likely to follow you back and interact with you when you have a filled out profile and a profile picture."
     other: Other
   errors:
     '400': The request you submitted was invalid or malformed.
@@ -1285,7 +1268,7 @@ en-GB:
     archive_takeout:
       date: Date
       download: Download your archive
-      hint_html: You can request an archive of your <strong>grongs and uploaded media</strong>. The exported data will be in the ActivityPub format, readable by any compliant software. You can request an archive every 7 days.
+      hint_html: You can request an archive of your <strong>posts and uploaded media</strong>. The exported data will be in the ActivityPub format, readable by any compliant software. You can request an archive every 7 days.
       in_progress: Compiling your archive...
       request: Request your archive
       size: Size
@@ -1300,7 +1283,7 @@ en-GB:
     add_new: Add new
     errors:
       limit: You have already featured the maximum number of hashtags
-    hint_html: "<strong>What are featured hashtags?</strong> They are displayed prominently on your public profile and allow people to browse your public grongs specifically under those hashtags. They are a great tool for keeping track of creative works or long-term projects."
+    hint_html: "<strong>What are featured hashtags?</strong> They are displayed prominently on your public profile and allow people to browse your public posts specifically under those hashtags. They are a great tool for keeping track of creative works or long-term projects."
   filters:
     contexts:
       account: Profiles
@@ -1311,8 +1294,8 @@ en-GB:
     edit:
       add_keyword: Add keyword
       keywords: Keywords
-      statuses: Individual grongs
-      statuses_hint_html: This filter applies to select individual grongs regardless of whether they match the keywords below. <a href="%{path}">Review or remove grongs from the filter</a>.
+      statuses: Individual posts
+      statuses_hint_html: This filter applies to select individual posts regardless of whether they match the keywords below. <a href="%{path}">Review or remove posts from the filter</a>.
       title: Edit filter
     errors:
       deprecated_api_multiple_keywords: These parameters cannot be changed from this application because they apply to more than one filter keyword. Use a more recent application or the web interface.
@@ -1327,11 +1310,11 @@ en-GB:
         one: "%{count} keyword"
         other: "%{count} keywords"
       statuses:
-        one: "%{count} grong"
-        other: "%{count} grongs"
+        one: "%{count} post"
+        other: "%{count} posts"
       statuses_long:
-        one: "%{count} individual grong hidden"
-        other: "%{count} individual grongs hidden"
+        one: "%{count} individual post hidden"
+        other: "%{count} individual posts hidden"
       title: Filters
     new:
       save: Save new filter
@@ -1341,8 +1324,8 @@ en-GB:
       batch:
         remove: Remove from filter
       index:
-        hint: This filter applies to select individual grongs regardless of other criteria. You can add more grongs to this filter from the web interface.
-        title: Filtered grongs
+        hint: This filter applies to select individual posts regardless of other criteria. You can add more posts to this filter from the web interface.
+        title: Filtered posts
   generic:
     all: All
     all_items_on_page_selected_html:
@@ -1383,21 +1366,6 @@ en-GB:
       overwrite: Overwrite
       overwrite_long: Replace current records with the new ones
     overwrite_preambles:
-<<<<<<< HEAD
-      blocking_html: You are about to <strong>replace your block list</strong> with up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-      bookmarks_html: You are about to <strong>replace your bookmarks</strong> with up to <strong>%{total_items} grongs</strong> from <strong>%{filename}</strong>.
-      domain_blocking_html: You are about to <strong>replace your domain block list</strong> with up to <strong>%{total_items} domains</strong> from <strong>%{filename}</strong>.
-      following_html: You are about to <strong>follow</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong> and <strong>stop following anyone else</strong>.
-      lists_html: You are about to <strong>replace your lists</strong> with contents of <strong>%{filename}</strong>. Up to <strong>%{total_items} accounts</strong> will be added to new lists.
-      muting_html: You are about to <strong>replace your list of muted accounts</strong> with up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-    preambles:
-      blocking_html: You are about to <strong>block</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-      bookmarks_html: You are about to add up to <strong>%{total_items} grongs</strong> from <strong>%{filename}</strong> to your <strong>bookmarks</strong>.
-      domain_blocking_html: You are about to <strong>block</strong> up to <strong>%{total_items} domains</strong> from <strong>%{filename}</strong>.
-      following_html: You are about to <strong>follow</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-      lists_html: You are about to add up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong> to your <strong>lists</strong>. New lists will be created if there is no list to add to.
-      muting_html: You are about to <strong>mute</strong> up to <strong>%{total_items} accounts</strong> from <strong>%{filename}</strong>.
-=======
       blocking_html:
         one: You are about to <strong>replace your block list</strong> with up to <strong>%{count} account</strong> from <strong>%{filename}</strong>.
         other: You are about to <strong>replace your block list</strong> with up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong>.
@@ -1435,7 +1403,6 @@ en-GB:
       muting_html:
         one: You are about to <strong>mute</strong> up to <strong>%{count} account</strong> from <strong>%{filename}</strong>.
         other: You are about to <strong>mute</strong> up to <strong>%{count} accounts</strong> from <strong>%{filename}</strong>.
->>>>>>> TheEssem/main
     preface: You can import data that you have exported from another server, such as a list of the people you are following or blocking.
     recent_imports: Recent imports
     states:
@@ -1519,12 +1486,8 @@ en-GB:
       title: Unsubscribe
   media_attachments:
     validations:
-<<<<<<< HEAD
-      images_and_video: Cannot attach a video to a grong that already contains images
-=======
       images_and_video: Cannot attach a video to a post that already contains images
       not_found: Media %{ids} not found or already attached to another post
->>>>>>> TheEssem/main
       not_ready: Cannot attach files that have not finished processing. Try again in a moment!
       too_many: Cannot attach more than 4 files
   migrations:
@@ -1573,8 +1536,8 @@ en-GB:
       sign_up:
         subject: "%{name} signed up"
     favourite:
-      body: 'Your grong was favourited by %{name}:'
-      subject: "%{name} favourited your grong"
+      body: 'Your post was favourited by %{name}:'
+      subject: "%{name} favourited your post"
       title: New favourite
     follow:
       body: "%{name} is now following you!"
@@ -1593,13 +1556,13 @@ en-GB:
     poll:
       subject: A poll by %{name} has ended
     reblog:
-      body: 'Your grong was boosted by %{name}:'
-      subject: "%{name} boosted your grong"
+      body: 'Your post was boosted by %{name}:'
+      subject: "%{name} boosted your post"
       title: New boost
     status:
-      subject: "%{name} just gronged"
+      subject: "%{name} just posted"
     update:
-      subject: "%{name} edited a grong"
+      subject: "%{name} edited a post"
   notifications:
     administration_emails: Admin email notifications
     email_events: Events for email notifications
@@ -1642,16 +1605,16 @@ en-GB:
       too_many_options: can't contain more than %{max} items
   preferences:
     other: Other
-    posting_defaults: Gronging defaults
+    posting_defaults: Posting defaults
     public_timelines: Public timelines
   privacy:
-    hint_html: "<strong>Customise how you want your profile and your grongs to be found.</strong> A variety of features in Mastodon can help you reach a wider audience when enabled. Take a moment to review these settings to make sure they fit your use case."
+    hint_html: "<strong>Customise how you want your profile and your posts to be found.</strong> A variety of features in Mastodon can help you reach a wider audience when enabled. Take a moment to review these settings to make sure they fit your use case."
     privacy: Privacy
-    privacy_hint_html: Control how much you want to disclose for the benefit of others. People discover interesting profiles and cool apps by browsing other people's follows and seeing which apps they grong from, but you may prefer to keep it hidden.
+    privacy_hint_html: Control how much you want to disclose for the benefit of others. People discover interesting profiles and cool apps by browsing other people's follows and seeing which apps they post from, but you may prefer to keep it hidden.
     reach: Reach
-    reach_hint_html: Control whether you want to be discovered and followed by new people. Do you want your grongs to appear on the Explore screen? Do you want other people to see you in their follow recommendations? Do you want to accept all new followers automatically, or have granular control over each one?
+    reach_hint_html: Control whether you want to be discovered and followed by new people. Do you want your posts to appear on the Explore screen? Do you want other people to see you in their follow recommendations? Do you want to accept all new followers automatically, or have granular control over each one?
     search: Search
-    search_hint_html: Control how you want to be found. Do you want people to find you by what you've publicly gronged about? Do you want people outside Mastodon to find your profile when searching the web? Please mind that total exclusion from all search engines cannot be guaranteed for public information.
+    search_hint_html: Control how you want to be found. Do you want people to find you by what you've publicly posted about? Do you want people outside Mastodon to find your profile when searching the web? Please mind that total exclusion from all search engines cannot be guaranteed for public information.
     title: Privacy and reach
   privacy_policy:
     title: Privacy Policy
@@ -1691,11 +1654,11 @@ en-GB:
   rss:
     content_warning: 'Content warning:'
     descriptions:
-      account: Public grongs from @%{acct}
-      tag: 'Public grongs tagged #%{hashtag}'
+      account: Public posts from @%{acct}
+      tag: 'Public posts tagged #%{hashtag}'
   scheduled_statuses:
-    over_daily_limit: You have exceeded the limit of %{limit} scheduled grongs for today
-    over_total_limit: You have exceeded the limit of %{limit} scheduled grongs
+    over_daily_limit: You have exceeded the limit of %{limit} scheduled posts for today
+    over_total_limit: You have exceeded the limit of %{limit} scheduled posts
     too_soon: The scheduled date must be in the future
   self_destruct:
     lead_html: Unfortunately, <strong>%{domain}</strong> is permanently closing down. If you had an account there, you will not be able to continue using it, but you can still request a backup of your data.
@@ -1765,8 +1728,8 @@ en-GB:
     preferences: Preferences
     profile: Profile
     relationships: Follows and followers
-    statuses_cleanup: Automated grong deletion
     severed_relationships: Severed relationships
+    statuses_cleanup: Automated post deletion
     strikes: Moderation strikes
     two_factor_authentication: Two-factor Auth
     webauthn_authentication: Security keys
@@ -1801,17 +1764,12 @@ en-GB:
       other: 'contained the disallowed hashtags: %{tags}'
     edited_at_html: Edited %{date}
     errors:
-<<<<<<< HEAD
-      in_reply_not_found: The grong you are trying to reply to does not appear to exist.
-    open_in_web: Open in web
-=======
       in_reply_not_found: The post you are trying to reply to does not appear to exist.
->>>>>>> TheEssem/main
     over_character_limit: character limit of %{max} exceeded
     pin_errors:
-      direct: Grongs that are only visible to mentioned users cannot be pinned
-      limit: You have already pinned the maximum number of grongs
-      ownership: Someone else's grong cannot be pinned
+      direct: Posts that are only visible to mentioned users cannot be pinned
+      limit: You have already pinned the maximum number of posts
+      ownership: Someone else's post cannot be pinned
       reblog: A boost cannot be pinned
     title: '%{name}: "%{quote}"'
     visibilities:
@@ -1823,26 +1781,26 @@ en-GB:
       unlisted: Unlisted
       unlisted_long: Everyone can see, but not listed on public timelines
   statuses_cleanup:
-    enabled: Automatically delete old grongs
-    enabled_hint: Automatically deletes your grongs once they reach a specified age threshold, unless they match one of the exceptions below
+    enabled: Automatically delete old posts
+    enabled_hint: Automatically deletes your posts once they reach a specified age threshold, unless they match one of the exceptions below
     exceptions: Exceptions
-    explanation: Because deleting grongs is an expensive operation, this is done slowly over time when the server is not otherwise busy. For this reason, your grongs may be deleted a while after they reach the age threshold.
+    explanation: Because deleting posts is an expensive operation, this is done slowly over time when the server is not otherwise busy. For this reason, your posts may be deleted a while after they reach the age threshold.
     ignore_favs: Ignore favourites
     ignore_reblogs: Ignore boosts
     interaction_exceptions: Exceptions based on interactions
-    interaction_exceptions_explanation: Note that there is no guarantee for grongs to be deleted if they go below the favourite or boost threshold after having once gone over them.
+    interaction_exceptions_explanation: Note that there is no guarantee for posts to be deleted if they go below the favourite or boost threshold after having once gone over them.
     keep_direct: Keep direct messages
     keep_direct_hint: Doesn't delete any of your direct messages
-    keep_media: Keep grongs with media attachments
-    keep_media_hint: Doesn't delete any of your grongs that have media attachments
-    keep_pinned: Keep pinned grongs
-    keep_pinned_hint: Doesn't delete any of your pinned grongs
+    keep_media: Keep posts with media attachments
+    keep_media_hint: Doesn't delete any of your posts that have media attachments
+    keep_pinned: Keep pinned posts
+    keep_pinned_hint: Doesn't delete any of your pinned posts
     keep_polls: Keep polls
     keep_polls_hint: Doesn't delete any of your polls
-    keep_self_bookmark: Keep grongs you bookmarked
-    keep_self_bookmark_hint: Doesn't delete your own grongs if you have bookmarked them
-    keep_self_fav: Keep grongs you favourited
-    keep_self_fav_hint: Doesn't delete your own grongs if you have favourited them
+    keep_self_bookmark: Keep posts you bookmarked
+    keep_self_bookmark_hint: Doesn't delete your own posts if you have bookmarked them
+    keep_self_fav: Keep posts you favourited
+    keep_self_fav_hint: Doesn't delete your own posts if you have favourited them
     min_age:
       '1209600': 2 weeks
       '15778476': 6 months
@@ -1853,10 +1811,10 @@ en-GB:
       '63113904': 2 years
       '7889238': 3 months
     min_age_label: Age threshold
-    min_favs: Keep grongs favourited at least
-    min_favs_hint: Doesn't delete any of your grongs that has received at least this number of favourites. Leave blank to delete grongs regardless of their number of favourites
-    min_reblogs: Keep grongs boosted at least
-    min_reblogs_hint: Doesn't delete any of your grongs that has been boosted at least this number of times. Leave blank to delete grongs regardless of their number of boosts
+    min_favs: Keep posts favourited at least
+    min_favs_hint: Doesn't delete any of your posts that has received at least this number of favourites. Leave blank to delete posts regardless of their number of favourites
+    min_reblogs: Keep posts boosted at least
+    min_reblogs_hint: Doesn't delete any of your posts that has been boosted at least this number of times. Leave blank to delete posts regardless of their number of boosts
   stream_entries:
     sensitive_content: Sensitive content
   strikes:
@@ -1931,26 +1889,26 @@ en-GB:
         spam: Spam
         violation: Content violates the following community guidelines
       explanation:
-        delete_statuses: Some of your grongs have been found to violate one or more community guidelines and have been subsequently removed by the moderators of %{instance}.
+        delete_statuses: Some of your posts have been found to violate one or more community guidelines and have been subsequently removed by the moderators of %{instance}.
         disable: You can no longer use your account, but your profile and other data remains intact. You can request a backup of your data, change account settings or delete your account.
-        mark_statuses_as_sensitive: Some of your grongs have been marked as sensitive by the moderators of %{instance}. This means that people will need to tap the media in the grongs before a preview is displayed. You can mark media as sensitive yourself when gronging in the future.
+        mark_statuses_as_sensitive: Some of your posts have been marked as sensitive by the moderators of %{instance}. This means that people will need to tap the media in the posts before a preview is displayed. You can mark media as sensitive yourself when posting in the future.
         sensitive: From now on, all your uploaded media files will be marked as sensitive and hidden behind a click-through warning.
-        silence: You can still use your account but only people who are already following you will see your grongs on this server, and you may be excluded from various discovery features. However, others may still manually follow you.
+        silence: You can still use your account but only people who are already following you will see your posts on this server, and you may be excluded from various discovery features. However, others may still manually follow you.
         suspend: You can no longer use your account, and your profile and other data are no longer accessible. You can still log in to request a backup of your data until the data is fully removed in about 30 days, but we will retain some basic data to prevent you from evading the suspension.
       reason: 'Reason:'
-      statuses: 'Grongs cited:'
+      statuses: 'Posts cited:'
       subject:
-        delete_statuses: Your grongs on %{acct} have been removed
+        delete_statuses: Your posts on %{acct} have been removed
         disable: Your account %{acct} has been frozen
-        mark_statuses_as_sensitive: Your grongs on %{acct} have been marked as sensitive
+        mark_statuses_as_sensitive: Your posts on %{acct} have been marked as sensitive
         none: Warning for %{acct}
-        sensitive: Your grongs on %{acct} will be marked as sensitive from now on
+        sensitive: Your posts on %{acct} will be marked as sensitive from now on
         silence: Your account %{acct} has been limited
         suspend: Your account %{acct} has been suspended
       title:
-        delete_statuses: Grongs removed
+        delete_statuses: Posts removed
         disable: Account frozen
-        mark_statuses_as_sensitive: Grongs marked as sensitive
+        mark_statuses_as_sensitive: Posts marked as sensitive
         none: Warning
         sensitive: Account marked as sensitive
         silence: Account limited
