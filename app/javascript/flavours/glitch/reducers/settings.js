@@ -59,6 +59,7 @@ const initialState = ImmutableMap({
       follow: true,
       follow_request: false,
       favourite: true,
+      reaction: true,
       reblog: true,
       reaction: true,
       mention: true,
@@ -73,6 +74,7 @@ const initialState = ImmutableMap({
       follow: true,
       follow_request: false,
       favourite: true,
+      reaction: true,
       reblog: true,
       reaction: true,
       mention: true,
@@ -81,6 +83,10 @@ const initialState = ImmutableMap({
       update: true,
       'admin.sign_up': true,
       'admin.report': true,
+    }),
+
+    group: ImmutableMap({
+      follow: true
     }),
   }),
 
