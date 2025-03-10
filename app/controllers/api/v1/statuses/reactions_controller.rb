@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class Api::V1::Statuses::ReactionsController < Api::V1::Statuses::BaseController
-  REACTIONS_LIMIT = 30
+  REACTIONS_LIMIT = 100
 
   before_action -> { doorkeeper_authorize! :write, :'write:favourites' }, only: [:create, :destroy]
   before_action -> { authorize_if_got_token! :read, :'read:accounts' }, only: [:index]
   before_action :require_user!, only: [:create, :destroy]
-  before_action :set_reactions, only: [:index]
   after_action :insert_pagination_headers, only: [:index]
 
   def index
     cache_if_unauthenticated!
-    render json: @reactions, each_serializer: REST::StatusReactionSerializer
+    @reactions = set_reactions
+    render json: @reactions, each_serializer: REST::StatusReactionSerializer, include_account: true, exclude_count: true
   end
 
   def create
@@ -48,35 +48,14 @@ class Api::V1::Statuses::ReactionsController < Api::V1::Statuses::BaseController
   private
 
   def set_reactions
-    @reactions = ordered_reactions.select(
+    ordered_reactions.select(
       [:id, :account_id, :name, :custom_emoji_id].tap do |values|
-        values << value_for_reaction_me_column(current_account&.id)
+        values << StatusReaction.value_for_reaction_me_column(current_account&.id)
       end
     ).to_a_paginated_by_id(
       limit_param(REACTIONS_LIMIT),
       params_slice(:max_id, :since_id, :min_id)
     )
-  end
-
-  def value_for_reaction_me_column(account_id)
-    if account_id.nil?
-      'FALSE AS me'
-    else
-      <<~SQL.squish
-        EXISTS(
-          SELECT 1
-          FROM status_reactions inner_reactions
-          WHERE inner_reactions.account_id = #{account_id}
-            AND inner_reactions.status_id = status_reactions.status_id
-            AND inner_reactions.name = status_reactions.name
-            AND (
-              inner_reactions.custom_emoji_id = status_reactions.custom_emoji_id
-              OR inner_reactions.custom_emoji_id IS NULL
-                AND status_reactions.custom_emoji_id IS NULL
-            )
-        ) AS me
-      SQL
-    end
   end
 
   def ordered_reactions
@@ -85,8 +64,10 @@ class Api::V1::Statuses::ReactionsController < Api::V1::Statuses::BaseController
 
   def filtered_reactions
     initial_reactions = StatusReaction.where(status: @status)
+    initial_reactions = initial_reactions.not_by_excluded_account(current_account) unless current_account.nil?
     if filtered?
-      initial_reactions.where(name: params[:emoji])
+      emoji, domain = params[:emoji].split('@')
+      initial_reactions.where(name: emoji).left_outer_joins(:custom_emoji).where(custom_emoji: { domain: domain })
     else
       initial_reactions
     end
