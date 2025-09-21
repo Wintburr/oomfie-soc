@@ -114,5 +114,6 @@
   "status.in_reply_to": "Dieser Toot ist eine Antwort",
   "status.is_poll": "Dieser Toot ist eine Umfrage",
   "status.local_only": "Nur auf deiner Instanz sichtbar",
+  "status.react": "Reagieren",
   "status.show_filter_reason": "Trotzdem anzeigen"
 }
