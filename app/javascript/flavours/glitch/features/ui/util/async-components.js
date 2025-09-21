@@ -74,10 +74,6 @@ export function AccountFeatured() {
   return import('../../account_featured');
 }
 
-export function AccountFeatured() {
-  return import(/* webpackChunkName: "flavours/glitch/async/account_featured" */'../../account_featured');
-}
-
 export function Followers () {
   return import('../../followers');
 }
