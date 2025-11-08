@@ -19,7 +19,6 @@
   "account.mute": "Wycisz @{name}",
   "account.posts": "Toots",
   "account.posts_with_replies": "Toots and replies",
-  "account.requested": "Awaiting approval",
   "account_note.placeholder": "Click to add a note",
   "community.column_settings.media_only": "Media only",
   "compose_form.encryption_warning": "Posts on Mastodon are not end-to-end encrypted. Do not share any dangerous information over Mastodon.",

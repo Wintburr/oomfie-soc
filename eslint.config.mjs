@@ -5,7 +5,6 @@ import path from 'node:path';
 import js from '@eslint/js';
 import { globalIgnores } from 'eslint/config';
 import formatjs from 'eslint-plugin-formatjs';
-// @ts-expect-error -- No typings
 import importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
 import jsxA11Y from 'eslint-plugin-jsx-a11y';
@@ -199,6 +198,8 @@ export default tseslint.config([
     'tmp/**/*',
     'vendor/**/*',
     'streaming/**/*',
+    '.bundle/**/*',
+    'storybook-static/**/*',
   ]),
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
@@ -309,6 +310,7 @@ export default tseslint.config([
       'react/jsx-tag-spacing': 'error',
       'react/jsx-wrap-multilines': 'error',
       'react/self-closing-comp': 'error',
+      'react/button-has-type': 'error',
     },
   },
   {

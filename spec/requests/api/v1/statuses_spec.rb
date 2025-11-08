@@ -158,7 +158,7 @@ RSpec.describe '/api/v1/statuses' do
         end
       end
 
-      context 'without a quote policy', feature: :outgoing_quotes do
+      context 'without a quote policy' do
         let(:user) do
           Fabricate(:user, settings: { default_quote_policy: 'followers' })
         end
@@ -180,7 +180,7 @@ RSpec.describe '/api/v1/statuses' do
         end
       end
 
-      context 'without a quote policy and the user defaults to nobody', feature: :outgoing_quotes do
+      context 'without a quote policy and the user defaults to nobody' do
         let(:user) do
           Fabricate(:user, settings: { default_quote_policy: 'nobody' })
         end
@@ -202,7 +202,7 @@ RSpec.describe '/api/v1/statuses' do
         end
       end
 
-      context 'with a quote policy', feature: :outgoing_quotes do
+      context 'with a quote policy' do
         let(:quoted_status) { Fabricate(:status, account: user.account) }
         let(:params) do
           {
@@ -227,8 +227,8 @@ RSpec.describe '/api/v1/statuses' do
         end
       end
 
-      context 'with a self-quote post', feature: :outgoing_quotes do
-        let(:quoted_status) { Fabricate(:status, account: user.account) }
+      context 'with a self-quote post' do
+        let!(:quoted_status) { Fabricate(:status, account: user.account) }
         let(:params) do
           {
             status: 'Hello world, this is a self-quote',
@@ -237,7 +237,7 @@ RSpec.describe '/api/v1/statuses' do
         end
 
         it 'returns a quote post, as well as rate limit headers', :aggregate_failures do
-          subject
+          expect { subject }.to change(user.account.statuses, :count).by(1)
 
           expect(response).to have_http_status(200)
           expect(response.content_type)
@@ -248,7 +248,71 @@ RSpec.describe '/api/v1/statuses' do
         end
       end
 
-      context 'with a self-quote post and a CW but no text', feature: :outgoing_quotes do
+      context 'with a quote to a non-mentioned user in a Private Mention' do
+        let!(:quoted_status) { Fabricate(:status, quote_approval_policy: Status::QUOTE_APPROVAL_POLICY_FLAGS[:public] << 16) }
+        let(:params) do
+          {
+            status: 'Hello, this is a quote',
+            quoted_status_id: quoted_status.id,
+            visibility: :direct,
+          }
+        end
+
+        it 'returns an error and does not create a post', :aggregate_failures do
+          expect { subject }.to_not change(user.account.statuses, :count)
+
+          expect(response).to have_http_status(422)
+          expect(response.content_type)
+            .to start_with('application/json')
+        end
+      end
+
+      context 'with a quote to a mentioned user in a Private Mention' do
+        let!(:quoted_status) { Fabricate(:status, quote_approval_policy: Status::QUOTE_APPROVAL_POLICY_FLAGS[:public] << 16) }
+        let(:params) do
+          {
+            status: "Hello @#{quoted_status.account.acct}, this is a quote",
+            quoted_status_id: quoted_status.id,
+            visibility: :direct,
+          }
+        end
+
+        it 'returns a quote post, as well as rate limit headers', :aggregate_failures do
+          expect { subject }.to change(user.account.statuses, :count).by(1)
+
+          expect(response).to have_http_status(200)
+          expect(response.content_type)
+            .to start_with('application/json')
+          expect(response.parsed_body[:quote]).to be_present
+          expect(response.headers['X-RateLimit-Limit']).to eq RateLimiter::FAMILIES[:statuses][:limit].to_s
+          expect(response.headers['X-RateLimit-Remaining']).to eq (RateLimiter::FAMILIES[:statuses][:limit] - 1).to_s
+        end
+      end
+
+      context 'with a quote of a reblog' do
+        let(:quoted_status) { Fabricate(:status, quote_approval_policy: Status::QUOTE_APPROVAL_POLICY_FLAGS[:public] << 16) }
+        let(:reblog) { Fabricate(:status, reblog: quoted_status) }
+        let(:params) do
+          {
+            status: 'Hello world, this is a self-quote',
+            quoted_status_id: reblog.id,
+          }
+        end
+
+        it 'returns a quote post, as well as rate limit headers', :aggregate_failures do
+          subject
+
+          expect(response).to have_http_status(200)
+          expect(response.content_type)
+            .to start_with('application/json')
+          expect(response.parsed_body[:quote]).to be_present
+          expect(response.parsed_body[:quote][:quoted_status][:id]).to eq quoted_status.id.to_s
+          expect(response.headers['X-RateLimit-Limit']).to eq RateLimiter::FAMILIES[:statuses][:limit].to_s
+          expect(response.headers['X-RateLimit-Remaining']).to eq (RateLimiter::FAMILIES[:statuses][:limit] - 1).to_s
+        end
+      end
+
+      context 'with a self-quote post and a CW but no text' do
         let(:quoted_status) { Fabricate(:status, account: user.account) }
         let(:params) do
           {
@@ -420,7 +484,7 @@ RSpec.describe '/api/v1/statuses' do
       context 'when updating only the quote policy' do
         let(:params) { { status: status.text, quote_approval_policy: 'public' } }
 
-        it 'updates the status', :aggregate_failures, feature: :outgoing_quotes do
+        it 'updates the status', :aggregate_failures do
           expect { subject }
             .to change { status.reload.quote_approval_policy }.to(Status::QUOTE_APPROVAL_POLICY_FLAGS[:public] << 16)
 
