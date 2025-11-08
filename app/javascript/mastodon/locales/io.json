@@ -824,6 +824,7 @@
   "status.translated_from_with": "Tradukita de {lang} per {provider}",
   "status.uncached_media_warning": "Previdajo nedisponebla",
   "status.unmute_conversation": "Desilencigez konverso",
+  "status.unpin": "Depinglagez de profilo",
   "subscribed_languages.lead": "Nur posti en selektita lingui aparos en vua hemo e listotempolineo pos chanjo. Selektez nulo por ganar posti en omna lingui.",
   "subscribed_languages.save": "Sparez chanji",
   "subscribed_languages.target": "Chanjez abonita lingui por {target}",

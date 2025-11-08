@@ -70,10 +70,6 @@ export function AccountFeatured() {
   return import('../../account_featured');
 }
 
-export function AccountFeatured() {
-  return import(/* webpackChunkName: "features/account_featured" */'../../account_featured');
-}
-
 export function Followers () {
   return import('../../followers');
 }

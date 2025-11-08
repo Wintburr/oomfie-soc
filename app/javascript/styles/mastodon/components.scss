@@ -7556,8 +7556,6 @@ a.status-card {
   border-radius: 8px;
   outline: 1px solid var(--media-outline-color);
   outline-offset: -1px;
-  aspect-ratio: 16 / 9;
-  container: audio-player / inline-size;
 
   &__controls {
     display: grid;
