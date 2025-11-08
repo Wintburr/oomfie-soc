@@ -151,7 +151,6 @@ sq:
         min_age: S’duhet të jetë nën moshën minimum të domosdoshme nga ligjet në juridiksionin tuaj.
       user:
         chosen_languages: Në iu vëntë shenjë, te rrjedha kohore publike do të shfaqen vetëm mesazhe në gjuhët e përzgjedhura
-        date_of_birth: Na duhet të sigurohemi se jeni të paktën %{age}, që të përdorni Mastodon-in. Këtë s’e depozitojmë.
         date_of_birth:
           one: Na duhet të sigurohemi se jeni të paktën %{count} që të përdorni %{domain}. S’do ta depozitojmë këtë.
           other: Na duhet të sigurohemi se jeni të paktën %{count} që të përdorni %{domain}. S’do ta depozitojmë këtë.

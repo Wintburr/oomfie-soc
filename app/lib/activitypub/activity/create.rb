@@ -70,7 +70,6 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       attach_tags(@status)
       attach_mentions(@status)
       attach_counts(@status)
-      attach_quote(@status)
     end
 
     resolve_thread(@status)
@@ -211,18 +210,6 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       status_stat.untrusted_favourites_count = likes unless likes.nil?
       status_stat.save if status_stat.changed?
     end
-  end
-
-  def attach_quote(status)
-    return if @quote.nil?
-
-    @quote.status = status
-    @quote.save
-
-    embedded_quote = safe_prefetched_embed(@account, @status_parser.quoted_object, @json['context'])
-    ActivityPub::VerifyQuoteService.new.call(@quote, fetchable_quoted_uri: @quote_uri, prefetched_quoted_object: embedded_quote, request_id: @options[:request_id])
-  rescue Mastodon::UnexpectedResponseError, *Mastodon::HTTP_CONNECTION_ERRORS
-    ActivityPub::RefetchAndVerifyQuoteWorker.perform_in(rand(30..600).seconds, @quote.id, @quote_uri, { 'request_id' => @options[:request_id] })
   end
 
   def process_tags
