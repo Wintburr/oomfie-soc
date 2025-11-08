@@ -965,12 +965,9 @@
   "status.translated_from_with": "由 {provider} 翻译自 {lang}",
   "status.uncached_media_warning": "预览不可用",
   "status.unmute_conversation": "恢复此对话的通知提醒",
-<<<<<<< HEAD
   "subscribed_languages.lead": "更改此选择后，只有选定语言的嘟文才会出现在你的主页和列表时间线上。选择「无」将显示所有语言的嘟文。",
-=======
   "status.unpin": "在个人资料页面取消置顶",
   "subscribed_languages.lead": "更改此选择后，只有选定语言的嘟文才会出现在你的主页和列表时间线上。选择「无」将显示全部语言的嘟文。",
->>>>>>> TheEssem/main
   "subscribed_languages.save": "保存更改",
   "subscribed_languages.target": "更改 {target} 的订阅语言",
   "tabs_bar.home": "主页",
