@@ -30,12 +30,9 @@
   "account.edit_profile_short": "Serrast bike",
   "account.enable_notifications": "Min agahdar bike gava @{name} diweşîne",
   "account.endorse": "Taybetiyên li ser profîl",
-<<<<<<< HEAD
   "account.featured.posts": "Şandî",
-=======
   "account.featured.accounts": "Profîl",
   "account.featured.hashtags": "Hashtag",
->>>>>>> TheEssem/main
   "account.featured_tags.last_status_at": "Şandiya dawî di {date} de",
   "account.featured_tags.last_status_never": "Şandî tune ne",
   "account.follow": "Bişopîne",
