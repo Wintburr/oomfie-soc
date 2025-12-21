@@ -7,6 +7,8 @@ it:
     hosted_on: Mastodon ospitato su %{domain}
     title: Info
   accounts:
+    errors:
+      cannot_be_added_to_collections: Questo account non può essere aggiunto alle collezioni.
     followers:
       one: Seguace
       other: Seguaci
@@ -846,6 +848,7 @@ it:
         publish_statistics: Pubblica le statistiche
         title: Scopri
         trends: Tendenze
+        wrapstodon: Wrapstodon
       domain_blocks:
         all: A tutti
         disabled: A nessuno
@@ -1672,7 +1675,7 @@ it:
       disabled_account: Il tuo account attuale non sarà più pienamente utilizzabile. Tuttavia, avrai accesso all'esportazione dei dati e alla riattivazione.
       followers: Questa azione sposterà tutti i follower dall'account attuale al nuovo account
       only_redirect_html: In alternativa, puoi solo <a href="%{path}">impostare un reindirizzamento sul tuo profilo</a>.
-      other_data: Nessun altro dato verrà spostato automaticamente
+      other_data: Nessun altro dato verrà trasferito automaticamente (compresi i tuoi post e l'elenco degli account che segui)
       redirect: Il profilo del tuo account corrente sarà aggiornato con un avviso di ridirezione e sarà escluso dalle ricerche
   moderation:
     title: Moderazione
@@ -1706,16 +1709,22 @@ it:
       body: 'Sei stato menzionato da %{name} su:'
       subject: Sei stato menzionato da %{name}
       title: Nuova menzione
+    moderation_warning:
+      subject: Hai ricevuto un avviso di moderazione
     poll:
       subject: Un sondaggio da %{name} è terminato
     quote:
       body: 'Il tuo post è stato citato da %{name}:'
       subject: "%{name} ha citato il tuo post"
       title: Nuova citazione
+    quoted_update:
+      subject: "%{name} ha modificato un post che hai citato"
     reblog:
       body: 'Il tuo status è stato condiviso da %{name}:'
       subject: "%{name} ha condiviso il tuo status"
       title: Nuova condivisione
+    severed_relationships:
+      subject: Hai perso le connessioni a causa di una decisione della moderazione
     status:
       subject: "%{name} ha appena pubblicato un post"
     update:
@@ -2179,3 +2188,6 @@ it:
     not_supported: Questo browser non supporta le chiavi di sicurezza
     otp_required: Per utilizzare le chiavi di sicurezza, prima abilita l'autenticazione a due fattori.
     registered_on: Registrato il %{date}
+  wrapstodon:
+    description: Guarda come %{name} ha utilizzato Mastodon quest'anno!
+    title: Wrapstodon %{year} per %{name}

@@ -1616,7 +1616,6 @@ ja:
       disabled_account: 引っ越した後はデータのエクスポートと再有効化を除きほとんどの機能が利用できなくなります
       followers: すべてのフォロワーを現在のアカウントから新しいアカウントに引き継ぎます
       only_redirect_html: または、<a href="%{path}">フォロワーを残したまま引っ越す</a>こともできます。
-      other_data: その他のデータは自動的に引き継がれません
       redirect: プロフィールに引っ越し済みの通知が表示され、検索結果から除外されます
   moderation:
     title: モデレーション
@@ -1701,6 +1700,8 @@ ja:
       too_few_options: は複数必要です
       too_many_options: は%{max}個までです
     vote: 投票
+  posting_defaults:
+    explanation: これらの設定は投稿を新規作成するときにデフォルトとして使用されますが、作成画面で投稿ごとに変更できます。
   preferences:
     other: その他
     posting_defaults: デフォルトの投稿設定
