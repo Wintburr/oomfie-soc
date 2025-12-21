@@ -1525,7 +1525,7 @@ body > [data-popper-placement] {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgb(from $ui-highlight-color r g b / 20%);
+    background: var(--color-bg-brand-softer);
     opacity: 0;
     animation: fade 0.7s reverse both 0.3s;
     pointer-events: none;
@@ -2182,7 +2182,7 @@ body > [data-popper-placement] {
   display: block;
   position: relative;
   border-radius: var(--avatar-border-radius);
-  background: var(--surface-background-color);
+  background: var(--color-bg-tertiary);
   flex-shrink: 0;
 
   img {
@@ -3063,20 +3063,21 @@ a.account__display-name {
 }
 
 .column__alert {
+  --alert-height: 54px;
+
   position: sticky;
   bottom: 0;
   z-index: 10;
   box-sizing: border-box;
   display: grid;
+  grid-template-rows: minmax(var(--alert-height), max-content);
+  align-items: end;
   width: 100%;
   max-width: 360px;
   padding: 1rem;
   margin: auto auto 0;
   overflow: clip;
-
-  &:empty {
-    padding: 0;
-  }
+  pointer-events: none;
 
   @media (max-width: #{$mobile-menu-breakpoint - 1}) {
     // Compensate for mobile menubar
@@ -3087,6 +3088,7 @@ a.account__display-name {
     // Make all nested alerts occupy the same space
     // rather than stack
     grid-area: 1 / 1;
+    pointer-events: initial;
   }
 }
 
@@ -3953,15 +3955,6 @@ a.account__display-name {
   }
 }
 
-.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background: darken($ui-primary-color, 5%);
-}
-
-.react-toggle.react-toggle--checked:hover:not(.react-toggle--disabled)
-  .react-toggle-track {
-  background: lighten($ui-highlight-color, 5%);
-}
-
 .follow_requests-unlocked_explanation,
 .switch-to-advanced {
   color: var(--color-text-secondary);
@@ -3974,7 +3967,7 @@ a.account__display-name {
   line-height: 18px;
 
   a {
-    color: $ui-button-tertiary-color;
+    color: var(--color-text-brand);
     font-weight: bold;
   }
 }
@@ -5113,7 +5106,7 @@ a.status-card {
       @include search-popout;
 
       padding: 0;
-      background: $ui-secondary-color;
+      background: var(--color-bg-elevated);
     }
 
     &__menu-list {
@@ -5160,7 +5153,7 @@ a.status-card {
 }
 
 .empty-column-indicator {
-  color: $dark-text-color;
+  color: var(--color-text-secondary);
   text-align: center;
   padding: 20px;
   font-size: 14px;
@@ -5677,28 +5670,18 @@ a.status-card {
 
 .visibility-modal {
   &__quote-warning {
-    color: var(--nested-card-text);
-    background:
-      /* This is a bit of a silly hack for layering two background colours
-       * since --nested-card-background is too transparent for a tooltip */
-      linear-gradient(
-        var(--nested-card-background),
-        var(--nested-card-background)
-      ),
-      linear-gradient(var(--background-color), var(--background-color));
-    border: var(--nested-card-border);
+    color: var(--color-text-primary);
+    background: var(--color-bg-warning-softer);
     padding: 16px;
     border-radius: 4px;
 
     h3 {
       font-weight: 500;
       margin-bottom: 4px;
-      color: $darker-text-color;
     }
 
     p {
       font-size: 0.8em;
-      color: $dark-text-color;
     }
   }
 }
@@ -6098,6 +6081,10 @@ a.status-card {
   > div {
     flex-shrink: 0;
     overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 }
 
@@ -8400,7 +8387,7 @@ noscript {
     }
 
     .icon-button {
-      border: 1px solid var(--background-border-color);
+      border: 1px solid var(--color-border-primary);
       border-radius: 4px;
       box-sizing: content-box;
       padding: 5px;
@@ -8411,7 +8398,7 @@ noscript {
       }
 
       &.copied {
-        border-color: $valid-value-color;
+        border-color: var(--color-text-success);
       }
     }
   }
@@ -8836,7 +8823,7 @@ noscript {
   }
 
   &__root {
-    background: lighten($ui-base-color, 8%);
+    background: var(--color-bg-brand-softer);
     font-size: 13px;
     display: flex;
     align-items: flex-end;
@@ -8884,7 +8871,7 @@ noscript {
     top: 19px;
     inset-inline-end: 19px;
     display: block;
-    background: $highlight-text-color;
+    background: var(--color-text-brand);
     border-radius: 50%;
     width: 0.625rem;
     height: 0.625rem;
@@ -9275,7 +9262,7 @@ noscript {
     &__shared {
       display: flex;
       align-items: baseline;
-      color: $darker-text-color;
+      color: var(--color-text-secondary);
       gap: 8px;
       justify-content: space-between;
       font-size: 14px;
@@ -10295,7 +10282,7 @@ noscript {
   &:hover,
   &:focus,
   &:active {
-    background: color.change($white, $alpha: 0.15);
+    background: var(--color-bg-brand-softer);
   }
 }
 
@@ -10319,7 +10306,7 @@ noscript {
   margin-inline-start: 2px;
 
   svg {
-    color: $white;
+    color: var(--color-text-on-media);
     height: var(--spinner-size);
     width: var(--spinner-size);
   }

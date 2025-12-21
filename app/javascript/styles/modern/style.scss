@@ -580,19 +580,16 @@ button.icon-button {
       font-size 13px
     } */
 }
+.columns-area__panels__main  .compose-form__highlightable {
+  background: none;
+}
+.compose-form__highlightable > .compose-form__dropdowns {
+  flex-wrap: nowrap;
+}
 .compose-form__highlightable > .compose-form__dropdowns button {
   border: 0;
   padding: 4px;
   transition: background 0.2s;
-}
-.compose-form__highlightable > .compose-form__dropdowns button::after {
-  content: "";
-  border: 0.3em solid currentcolor;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  transform: rotate(45deg);
-  margin-top: -0.2em;
-  margin-inline: 0px 2px;
 }
 .compose-form__highlightable > .compose-form__dropdowns button:hover:not(.active) {
   background: var(--hover-color);
@@ -615,6 +612,7 @@ button.icon-button {
   justify-content: center;
   flex-grow: 1;
   aspect-ratio: 1;
+  max-width: 38px;
   padding: 0;
   border-radius: 6px;
 }
@@ -622,12 +620,10 @@ button.icon-button {
   display: none !important;
 }
 .compose-form__highlightable .compose-form__buttons .character-counter {
+  margin-inline-start: auto;
   flex-grow: 0;
   min-width: 4ch;
   padding-inline: 10px 4px;
-}
-.compose-form__highlightable .compose-form__submit button {
-  padding: 8px 16px;
 }
 .server-banner .server-banner__hero {
   border-radius: var(--radius);

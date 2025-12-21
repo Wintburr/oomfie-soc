@@ -4,8 +4,6 @@ import type { EMOJI_DB_NAME_SHORTCODES } from './constants';
 import { toSupportedLocale } from './locale';
 import type { LocaleOrCustom } from './types';
 import { emojiLogger } from './utils';
-// eslint-disable-next-line import/default -- Importing via worker loader.
-import EmojiWorker from './worker?worker&inline';
 
 const userLocale = toSupportedLocale(initialState?.meta.locale ?? 'en');
 
