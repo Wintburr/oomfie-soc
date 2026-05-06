@@ -1937,8 +1937,8 @@ en:
     posting_defaults: Gronging defaults
     public_timelines: Public timelines
   privacy:
-    email_subscriptions: Send posts via email
-    email_subscriptions_hint_html: Add an email sign-up form to your profile that appears for logged-out users. When visitors enter their email address and opt in, Mastodon will send email updates for your public posts.
+    email_subscriptions: Send grongs via email
+    email_subscriptions_hint_html: Add an email sign-up form to your profile that appears for logged-out users. When visitors enter their email address and opt in, Mastodon will send email updates for your public grongs.
     hint_html: "<strong>Customize how you want your profile and your grongs to be found.</strong> A variety of features in Mastodon can help you reach a wider audience when enabled. Take a moment to review these settings to make sure they fit your use case."
     privacy: Privacy
     privacy_hint_html: Control how much you want to disclose for the benefit of others. People discover interesting profiles and cool apps by browsing other people's follows and seeing which apps they grong from, but you may prefer to keep it hidden.
@@ -2132,7 +2132,7 @@ en:
     ignore_favs: Ignore favorites
     ignore_reblogs: Ignore boosts
     interaction_exceptions: Exceptions based on interactions
-    interaction_exceptions_explanation: Posts which temporarily exceed the favorite or boost threshold may be retained even if they are later decreased.
+    interaction_exceptions_explanation: Grongs which temporarily exceed the favorite or boost threshold may be retained even if they are later decreased.
     keep_direct: Keep direct messages
     keep_direct_hint: Doesn't delete any of your direct messages
     keep_media: Keep grongs with media attachments
