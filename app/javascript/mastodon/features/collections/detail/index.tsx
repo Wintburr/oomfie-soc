@@ -1,11 +1,16 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { Helmet } from 'react-helmet';
 import { useHistory, useLocation, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import { Helmet } from '@unhead/react/helmet';
+
+import { Column } from '@/mastodon/components/column';
+import { ColumnHeader as LegacyColumnHeader } from '@/mastodon/components/column/header';
+import { ColumnHeader } from '@/mastodon/components/column_header';
+import { isRedesignEnabled } from '@/mastodon/utils/environment';
 import HelpIcon from '@/material-icons/400-24px/help.svg?react';
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
 import ShareIcon from '@/material-icons/400-24px/share.svg?react';
@@ -17,8 +22,6 @@ import type {
 } from 'mastodon/api_types/collections';
 import { Badge } from 'mastodon/components/badge';
 import { Callout } from 'mastodon/components/callout';
-import { Column } from 'mastodon/components/column';
-import { ColumnHeader } from 'mastodon/components/column_header';
 import { DisplayName } from 'mastodon/components/display_name';
 import { useAccountHandle } from 'mastodon/components/display_name/default';
 import { FormattedDateWrapper } from 'mastodon/components/formatted_date';
@@ -137,9 +140,40 @@ export const PendingNote: React.FC = () => {
   );
 };
 
-const CollectionHeader: React.FC<{ collection: ApiCollectionJSON }> = ({
-  collection,
+const SensitiveContentNote: React.FC<{ onReveal: () => void }> = ({
+  onReveal,
 }) => {
+  return (
+    <Callout
+      variant='warning'
+      title={
+        <FormattedMessage
+          id='collections.detail.sensitive_content'
+          defaultMessage='Sensitive content'
+        />
+      }
+      primaryLabel={
+        <FormattedMessage
+          id='content_warning.show_short'
+          defaultMessage='Show'
+        />
+      }
+      onPrimary={onReveal}
+      className={classes.sensitiveScreen}
+    >
+      <FormattedMessage
+        id='collections.detail.sensitive_note'
+        defaultMessage='The description and accounts may not be suitable for all viewers.'
+      />
+    </Callout>
+  );
+};
+
+const CollectionHeader: React.FC<{
+  collection: ApiCollectionJSON;
+  withDescription: boolean;
+  headingRef: React.RefObject<HTMLHeadingElement | null>;
+}> = ({ collection, withDescription, headingRef }) => {
   const intl = useIntl();
   const { name, description, tag, account_id, items } = collection;
   const dispatch = useAppDispatch();
@@ -180,7 +214,9 @@ const CollectionHeader: React.FC<{ collection: ApiCollectionJSON }> = ({
       <div className={classes.titleWithMenu}>
         <div className={classes.titleWrapper}>
           {tag && <Badge label={`#${tag.name}`} icon={null} />}
-          <h2 className={classes.name}>{name}</h2>
+          <h2 className={classes.name} ref={headingRef} tabIndex={-1}>
+            {name}
+          </h2>
           <AuthorNote id={account_id} />
         </div>
         <div className={classes.headerButtonWrapper}>
@@ -198,7 +234,9 @@ const CollectionHeader: React.FC<{ collection: ApiCollectionJSON }> = ({
           />
         </div>
       </div>
-      {description && <p className={classes.description}>{description}</p>}
+      {withDescription && description && (
+        <p className={classes.description}>{description}</p>
+      )}
       {hasPendingAccounts && <PendingNote />}
       {isCurrentUserInCollection && (
         <RevokeControls
@@ -207,6 +245,52 @@ const CollectionHeader: React.FC<{ collection: ApiCollectionJSON }> = ({
         />
       )}
     </header>
+  );
+};
+
+function useRevealSensitiveContent({
+  sensitive,
+}: {
+  sensitive: boolean | undefined;
+}) {
+  const postRevealFocusTargetRef = useRef<HTMLHeadingElement>(null);
+  const [isContentVisible, setIsContentVisible] = useState(!sensitive);
+
+  const revealContent = useCallback(() => {
+    setIsContentVisible(true);
+    setTimeout(() => {
+      postRevealFocusTargetRef.current?.focus();
+    }, 0);
+  }, [postRevealFocusTargetRef]);
+
+  return {
+    isContentVisible,
+    revealContent,
+    postRevealFocusTargetRef,
+  };
+}
+
+const ColumnContent: React.FC<{
+  collection: ApiCollectionJSON;
+}> = ({ collection }) => {
+  const { isContentVisible, revealContent, postRevealFocusTargetRef } =
+    useRevealSensitiveContent({
+      sensitive: collection.sensitive && collection.account_id !== me,
+    });
+
+  return (
+    <>
+      <CollectionHeader
+        collection={collection}
+        headingRef={postRevealFocusTargetRef}
+        withDescription={isContentVisible}
+      />
+      {isContentVisible ? (
+        <CollectionAccountsList collection={collection} />
+      ) : (
+        <SensitiveContentNote onReveal={revealContent} />
+      )}
+    </>
   );
 };
 
@@ -230,20 +314,21 @@ export const CollectionDetailPage: React.FC<{
 
   return (
     <Column bindToDocument={!multiColumn} label={pageTitle}>
-      <ColumnHeader
-        showBackButton
-        title={pageTitle}
-        icon='collection-icon'
-        iconComponent={ListAltIcon}
-        multiColumn={multiColumn}
-      />
+      {isRedesignEnabled() ? (
+        <ColumnHeader withBackButton title={pageTitle} />
+      ) : (
+        <LegacyColumnHeader
+          showBackButton
+          title={pageTitle}
+          icon='collection-icon'
+          iconComponent={ListAltIcon}
+          multiColumn={multiColumn}
+        />
+      )}
 
       <Scrollable>
         {collection ? (
-          <>
-            <CollectionHeader collection={collection} />
-            <CollectionAccountsList collection={collection} />
-          </>
+          <ColumnContent collection={collection} />
         ) : (
           <LoadingIndicator />
         )}

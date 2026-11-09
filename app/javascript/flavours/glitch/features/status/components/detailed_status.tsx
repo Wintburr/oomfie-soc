@@ -6,29 +6,31 @@
 import type { CSSProperties } from 'react';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
+import StatusContent from '@/flavours/glitch/components/status/legacy/content';
+import { ContentWarning } from '@/flavours/glitch/components/status/legacy/content_warning';
+import { FilterWarning } from '@/flavours/glitch/components/status/legacy/filter_warning';
+import type { StatusLike } from '@/flavours/glitch/components/status/legacy/hashtag_bar';
+import { getHashtagBarForStatus } from '@/flavours/glitch/components/status/legacy/hashtag_bar';
+import { PictureInPicturePlaceholder } from '@/flavours/glitch/components/status/legacy/picture_in_picture_placeholder';
+import { QuotedStatus } from '@/flavours/glitch/components/status/legacy/quoted';
+import HomeIcon from '@/material-icons/400-24px/home.svg?react';
 import { AnimatedNumber } from 'flavours/glitch/components/animated_number';
 import AttachmentList from 'flavours/glitch/components/attachment_list';
 import { Avatar } from 'flavours/glitch/components/avatar';
-import { ContentWarning } from 'flavours/glitch/components/content_warning';
 import { DisplayName } from 'flavours/glitch/components/display_name';
 import { EditedTimestamp } from 'flavours/glitch/components/edited_timestamp';
-import { FilterWarning } from 'flavours/glitch/components/filter_warning';
 import { FormattedDateWrapper } from 'flavours/glitch/components/formatted_date';
-import type { StatusLike } from 'flavours/glitch/components/hashtag_bar';
-import { getHashtagBarForStatus } from 'flavours/glitch/components/hashtag_bar';
+import { Icon } from 'flavours/glitch/components/icon';
 import { IconLogo } from 'flavours/glitch/components/logo';
 import MediaGallery from 'flavours/glitch/components/media_gallery';
-import { MentionsPlaceholder } from 'flavours/glitch/components/mentions_placeholder';
 import { Permalink } from 'flavours/glitch/components/permalink';
-import { PictureInPicturePlaceholder } from 'flavours/glitch/components/picture_in_picture_placeholder';
-import StatusContent from 'flavours/glitch/components/status_content';
-import { QuotedStatus } from 'flavours/glitch/components/status_quoted';
-import { StatusReactions } from 'flavours/glitch/components/status_reactions';
+import { MentionsPlaceholder } from 'flavours/glitch/components/status/legacy/mentions_placeholder';
+import { StatusReactions } from 'flavours/glitch/components/status/legacy/reactions';
 import { VisibilityIcon } from 'flavours/glitch/components/visibility_icon';
 import { Audio } from 'flavours/glitch/features/audio';
 import { CollectionPreviewCard } from 'flavours/glitch/features/collections/components/collection_preview_card';
@@ -41,6 +43,13 @@ import { useAppSelector } from 'flavours/glitch/store';
 import { compareUrls } from 'flavours/glitch/utils/compare_urls';
 
 import Card from './card';
+
+const messages = defineMessages({
+  localOnly: {
+    id: 'status.local_only',
+    defaultMessage: 'Only visible from your instance',
+  },
+});
 
 interface VideoModalOptions {
   startTime: number;
@@ -90,7 +99,8 @@ export const DetailedStatus: React.FC<{
   const properStatus = status?.get('reblog') ?? status;
   const [height, setHeight] = useState(0);
   const [showDespiteFilter, setShowDespiteFilter] = useState(false);
-  const nodeRef = useRef<HTMLDivElement>();
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const intl = useIntl();
 
   const letterboxMedia = useAppSelector(
     (state) =>
@@ -310,7 +320,12 @@ export const DetailedStatus: React.FC<{
       );
 
     if (taggedCollection) {
-      media = <CollectionPreviewCard collection={taggedCollection} />;
+      media = (
+        <CollectionPreviewCard
+          collection={taggedCollection.toJS()}
+          headingLevel='h2'
+        />
+      );
     } else {
       media = (
         <Card
@@ -326,7 +341,10 @@ export const DetailedStatus: React.FC<{
     const firstLinkedCollection = status.get('tagged_collections').first();
     if (firstLinkedCollection) {
       media = (
-        <CollectionPreviewCard collection={firstLinkedCollection.toJS()} />
+        <CollectionPreviewCard
+          collection={firstLinkedCollection.toJS()}
+          headingLevel='h2'
+        />
       );
     }
   }
@@ -356,6 +374,18 @@ export const DetailedStatus: React.FC<{
       ·<VisibilityIcon visibility={status.get('visibility')} />
     </>
   );
+
+  const localOnlyLink = status.get('local_only') ? (
+    <>
+      ·
+      <Icon
+        id='home'
+        icon={HomeIcon}
+        className='status__visibility-icon'
+        aria-label={intl.formatMessage(messages.localOnly)}
+      />
+    </>
+  ) : null;
 
   if (['private', 'direct'].includes(status.get('visibility') as string)) {
     reblogLink = '';
@@ -482,9 +512,13 @@ export const DetailedStatus: React.FC<{
         data-status-by={status.getIn(['account', 'acct'])}
       >
         <Permalink
-          to={`/@${status.getIn(['account', 'acct'])}`}
+          to={{
+            pathname: `/@${status.getIn(['account', 'acct'])}`,
+            state: { reference: 'status' },
+          }}
           href={status.getIn(['account', 'url'])}
           data-hover-card-account={status.getIn(['account', 'id'])}
+          data-hover-card-reference='status'
           className='detailed-status__display-name'
         >
           <div className='detailed-status__display-avatar'>
@@ -513,7 +547,7 @@ export const DetailedStatus: React.FC<{
 
         {(!matchedFilters || showDespiteFilter) && (
           <ContentWarning
-            status={status}
+            statusId={status.get('id')}
             expanded={expanded}
             onClick={handleExpandedToggle}
           />
@@ -545,11 +579,8 @@ export const DetailedStatus: React.FC<{
 
         {!!visibleReactions && (
           <StatusReactions
-            statusId={status.get('id')}
-            reactions={status.get('reactions')}
-            addReaction={onReactionAdd}
-            removeReaction={onReactionRemove}
-            canReact={signedIn}
+            id={status.get('id')}
+            reactions={status.get('reactions').toArray()}
           />
         )}
 
@@ -571,6 +602,7 @@ export const DetailedStatus: React.FC<{
               />
             </a>
 
+            {localOnlyLink}
             {visibilityLink}
             {applicationLink}
           </div>

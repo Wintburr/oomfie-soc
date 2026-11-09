@@ -3,21 +3,22 @@ import type { FC } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
-import classNames from 'classnames';
-
 import { followAccount } from '@/mastodon/actions/accounts';
 import { useAccount } from '@/mastodon/hooks/useAccount';
+import { useFollowReference } from '@/mastodon/hooks/useFollowReference';
 import { getAccountHidden } from '@/mastodon/selectors/accounts';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
+import { isRedesignEnabled } from '@/mastodon/utils/environment';
 import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
 import NotificationsActiveIcon from '@/material-icons/400-24px/notifications_active-fill.svg?react';
 import ShareIcon from '@/material-icons/400-24px/share.svg?react';
 
-import { CopyIconButton } from '../copy_icon_button';
+import { CopyIconButton } from '../copy_button';
 import { FollowButton } from '../follow_button';
 import { IconButton } from '../icon_button';
 
 import { AccountMenu } from './menu';
+import classes from './styles.module.scss';
 
 const messages = defineMessages({
   enableNotifications: {
@@ -49,7 +50,7 @@ export const AccountButtons: FC<AccountButtonsProps> = ({
   const me = useAppSelector((state) => state.meta.get('me') as string);
 
   return (
-    <div className={classNames('account__header__buttons', className)}>
+    <div className={className}>
       {!hidden && (
         <AccountButtonsOther accountId={accountId} noShare={noShare} />
       )}
@@ -70,6 +71,7 @@ const AccountButtonsOther: FC<
   const dispatch = useAppDispatch();
   const handleNotifyToggle = useCallback(() => {
     if (account) {
+      // @ts-expect-error this action is not typed yet
       dispatch(followAccount(account.id, { notify: !relationship?.notifying }));
     }
   }, [dispatch, account, relationship]);
@@ -82,6 +84,8 @@ const AccountButtonsOther: FC<
     }
   }, [accountUrl]);
 
+  const reference = useFollowReference('profile');
+
   if (!account) {
     return null;
   }
@@ -93,9 +97,12 @@ const AccountButtonsOther: FC<
     <>
       {!isMovedAndUnfollowedAccount && (
         <FollowButton
+          compact={isRedesignEnabled()}
           accountId={accountId}
-          className='account__header__follow-button'
+          className={classes.followButton}
+          withUnmute={false}
           labelLength='long'
+          reference={reference}
         />
       )}
       {isFollowing && (

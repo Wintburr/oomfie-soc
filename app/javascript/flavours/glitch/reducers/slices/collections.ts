@@ -1,6 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
+import { fetchAccounts } from '@/flavours/glitch/actions/accounts_typed';
 import { importFetchedAccounts } from '@/flavours/glitch/actions/importer';
 import {
   apiCreateCollection,
@@ -19,12 +20,14 @@ import type {
   ApiUpdateCollectionPayload,
   CollectionAccountItem,
 } from '@/flavours/glitch/api_types/collections';
-import { me } from '@/flavours/glitch/initial_state';
+import { initialState, me } from '@/flavours/glitch/initial_state';
+import type { AppDispatch } from '@/flavours/glitch/store';
 import {
   createAppAsyncThunk,
   createAppSelector,
   createDataLoadingThunk,
 } from '@/flavours/glitch/store/typed_functions';
+import { batchArray } from '@/flavours/glitch/utils/batch_array';
 import { inputToHashtag } from '@/flavours/glitch/utils/hashtags';
 
 type QueryStatus = 'idle' | 'loading' | 'error';
@@ -63,7 +66,7 @@ interface EditorState {
   name: string;
   description: string;
   topic: string;
-  language: string | null;
+  language: string;
   discoverable: boolean;
   sensitive: boolean;
   items: EditorCollectionItem[];
@@ -74,7 +77,7 @@ interface UpdateEditorFieldPayload<K extends keyof EditorState> {
   value: EditorState[K];
 }
 
-const initialState: CollectionState = {
+const initialCollectionState: CollectionState = {
   collections: {},
   createdBy: {},
   featuring: {},
@@ -83,7 +86,7 @@ const initialState: CollectionState = {
     name: '',
     description: '',
     topic: '',
-    language: null,
+    language: initialState?.compose.default_language ?? 'en',
     discoverable: true,
     sensitive: false,
     items: [],
@@ -92,24 +95,27 @@ const initialState: CollectionState = {
 
 const collectionSlice = createSlice({
   name: 'collections',
-  initialState,
+  initialState: initialCollectionState,
   reducers: {
-    init(state, action: PayloadAction<ApiCollectionJSON | null>) {
+    init(state, action: PayloadAction<ApiCollectionJSON>) {
       const collection = action.payload;
 
       state.editor = {
-        id: collection?.id ?? null,
-        name: collection?.name ?? '',
-        description: collection?.description ?? '',
-        topic: inputToHashtag(collection?.tag?.name ?? ''),
-        language: collection?.language ?? '',
-        discoverable: collection?.discoverable ?? true,
-        sensitive: collection?.sensitive ?? false,
-        items: getEditorCollectionItems(collection?.items ?? []),
+        id: collection.id,
+        name: collection.name,
+        description: collection.description ?? '',
+        topic: inputToHashtag(collection.tag?.name ?? ''),
+        language: collection.language ?? '',
+        discoverable: collection.discoverable,
+        sensitive: collection.sensitive,
+        items: getEditorCollectionItems(collection.items),
       };
     },
-    reset(state) {
-      state.editor = initialState.editor;
+    reset(state, action: PayloadAction<EditorCollectionItem | undefined>) {
+      state.editor =
+        action.payload !== undefined
+          ? { ...initialCollectionState.editor, items: [action.payload] }
+          : initialCollectionState.editor;
     },
     updateEditorField<K extends keyof EditorState>(
       state: CollectionState,
@@ -117,6 +123,15 @@ const collectionSlice = createSlice({
     ) {
       const { field, value } = action.payload;
       state.editor[field] = value;
+    },
+    importFetchedCollections(
+      state,
+      action: PayloadAction<ApiCollectionJSON[]>,
+    ) {
+      const collections = action.payload;
+      collections.forEach((collection) => {
+        state.collections[collection.id] = collection;
+      });
     },
   },
   extraReducers(builder) {
@@ -233,7 +248,7 @@ const collectionSlice = createSlice({
     builder.addCase(updateCollection.fulfilled, (state, action) => {
       const { collection } = action.payload;
       state.collections[collection.id] = collection;
-      state.editor = initialState.editor;
+      state.editor = initialCollectionState.editor;
     });
 
     /**
@@ -262,7 +277,7 @@ const collectionSlice = createSlice({
       const { collection } = actions.payload;
 
       state.collections[collection.id] = collection;
-      state.editor = initialState.editor;
+      state.editor = initialCollectionState.editor;
 
       if (state.createdBy[collection.account_id]) {
         state.createdBy[collection.account_id]?.collectionIds.unshift(
@@ -283,8 +298,12 @@ const collectionSlice = createSlice({
     builder.addCase(addCollectionItem.fulfilled, (state, action) => {
       const { collection_item } = action.payload;
       const { collectionId } = action.meta.arg;
+      const collection = state.collections[collectionId];
 
-      state.collections[collectionId]?.items.push(collection_item);
+      if (collection) {
+        collection.items.push(collection_item);
+        collection.item_count++;
+      }
     });
 
     /**
@@ -302,6 +321,7 @@ const collectionSlice = createSlice({
         collection.items = collection.items.filter(
           (item) => item.id !== itemId,
         );
+        collection.item_count--;
       }
     };
 
@@ -317,16 +337,48 @@ const collectionSlice = createSlice({
   },
 });
 
+/**
+ * Prefetch accounts whose avatars will be displayed in the collection list
+ */
+export async function fetchAccountsForCollectionPreview(
+  collections: ApiCollectionJSON[],
+  dispatch: AppDispatch,
+) {
+  const previewAccountIds = collections
+    .flatMap((collection) =>
+      collection.items.slice(0, 3).map((item) => item.account_id),
+    )
+    .filter((id): id is string => !!id);
+
+  if (previewAccountIds.length > 0) {
+    // fetchAccounts can only process up to 40 item ids, so we'll
+    // batch the list of ids
+    const batchedAccountIdLists = batchArray(previewAccountIds, 40);
+
+    await Promise.allSettled(
+      batchedAccountIdLists.map((accountIds) =>
+        dispatch(fetchAccounts({ accountIds })),
+      ),
+    );
+  }
+}
+
 export const fetchCollectionsCreatedByAccount = createDataLoadingThunk(
   `${collectionSlice.name}/fetchCollectionsCreatedByAccount`,
   ({ accountId }: { accountId: string }) =>
     apiGetCollectionsCreatedByAccount(accountId),
+  async ({ collections }, { dispatch }) => {
+    await fetchAccountsForCollectionPreview(collections, dispatch);
+  },
 );
 
 export const fetchCollectionsFeaturingAccount = createDataLoadingThunk(
   `${collectionSlice.name}/fetchCollectionsFeaturingAccount`,
   ({ accountId }: { accountId: string }) =>
     apiGetCollectionsFeaturingAccount(accountId),
+  async ({ collections }, { dispatch }) => {
+    await fetchAccountsForCollectionPreview(collections, dispatch);
+  },
 );
 
 export const fetchCollection = createDataLoadingThunk(
@@ -381,6 +433,8 @@ export const collections = collectionSlice.reducer;
 export const collectionEditorActions = collectionSlice.actions;
 export const updateCollectionEditorField =
   collectionSlice.actions.updateEditorField;
+export const importFetchedCollections =
+  collectionSlice.actions.importFetchedCollections;
 
 /**
  * Selectors

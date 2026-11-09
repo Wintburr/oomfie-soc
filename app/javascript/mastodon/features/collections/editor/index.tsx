@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { Helmet } from 'react-helmet';
 import {
   Switch,
   Route,
@@ -12,20 +11,25 @@ import {
   useLocation,
 } from 'react-router-dom';
 
-import { Callout } from '@/mastodon/components/callout';
-import { useCurrentAccountId } from '@/mastodon/hooks/useAccountId';
-import { initialState } from '@/mastodon/initial_state';
+import { Helmet } from '@unhead/react/helmet';
+
+import { Column } from '@/mastodon/components/column';
+import { ColumnHeader as LegacyColumnHeader } from '@/mastodon/components/column/header';
+import { ColumnHeader } from '@/mastodon/components/column_header';
+import { isRedesignEnabled } from '@/mastodon/utils/environment';
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
-import { Column } from 'mastodon/components/column';
-import { ColumnHeader } from 'mastodon/components/column_header';
+import { Callout } from 'mastodon/components/callout';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
+import { NotSignedInIndicator } from 'mastodon/components/not_signed_in_indicator';
+import { useIdentity } from 'mastodon/identity_context';
+import { initialState } from 'mastodon/initial_state';
 import {
   collectionEditorActions,
   fetchCollection,
 } from 'mastodon/reducers/slices/collections';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
-import { useCollectionsCreatedBy } from '../overview/created_by_you';
+import { useCollectionsCreatedBy } from '../overview/created_by_account';
 
 import { CollectionAccounts } from './accounts';
 import { CollectionDetails } from './details';
@@ -74,7 +78,7 @@ export const CollectionEditorPage: React.FC<{
 }> = ({ multiColumn }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const accountId = useCurrentAccountId();
+  const { accountId, signedIn } = useIdentity();
   const { id = null } = useParams<{ id?: string }>();
   const { path } = useRouteMatch();
   const collection = useAppSelector((state) =>
@@ -93,13 +97,13 @@ export const CollectionEditorPage: React.FC<{
     (!isEditMode && collectionListStatus === 'loading');
 
   const canCreateMoreCollections =
-    isEditMode || collectionList.length < userCollectionLimit;
+    signedIn && (isEditMode || collectionList.length < userCollectionLimit);
 
   useEffect(() => {
-    if (id) {
+    if (id && signedIn) {
       void dispatch(fetchCollection({ collectionId: id }));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, signedIn]);
 
   useEffect(() => {
     if (id !== editorStateId) {
@@ -117,17 +121,23 @@ export const CollectionEditorPage: React.FC<{
 
   return (
     <Column bindToDocument={!multiColumn} label={pageTitle}>
-      <ColumnHeader
-        title={pageTitle}
-        icon='list-ul'
-        iconComponent={ListAltIcon}
-        multiColumn={multiColumn}
-        showBackButton
-      />
+      {isRedesignEnabled() ? (
+        <ColumnHeader title={pageTitle} withBackButton='auto' />
+      ) : (
+        <LegacyColumnHeader
+          title={pageTitle}
+          icon='list-ul'
+          iconComponent={ListAltIcon}
+          multiColumn={multiColumn}
+          showBackButton
+        />
+      )}
 
       <div className='scrollable'>
         {isLoading ? (
           <LoadingIndicator />
+        ) : !signedIn ? (
+          <NotSignedInIndicator />
         ) : canCreateMoreCollections ? (
           <Switch>
             <Route

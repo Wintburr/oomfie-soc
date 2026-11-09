@@ -1,20 +1,25 @@
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Helmet } from 'react-helmet';
+import classNames from 'classnames';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
-import { TabLink, TabList } from '@/flavours/glitch/components/tab_list';
-import { Column } from 'flavours/glitch/components/column';
-import { ColumnHeader } from 'flavours/glitch/components/column_header';
+import { Helmet } from '@unhead/react/helmet';
+
+import { Column } from '@/flavours/glitch/components/column';
+import { ColumnHeader as LegacyColumnHeader } from '@/flavours/glitch/components/column/header';
+import { ColumnHeader } from '@/flavours/glitch/components/column_header';
+import { NavigationFocusTarget } from '@/flavours/glitch/components/navigation_focus_target';
+import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
 import { DisplayNameSimple } from 'flavours/glitch/components/display_name/simple';
 import { Scrollable } from 'flavours/glitch/components/scrollable_list/components';
+import { TabLink, TabList } from 'flavours/glitch/components/tab_list';
 import { useAccount } from 'flavours/glitch/hooks/useAccount';
 import {
   useAccountId,
   useCurrentAccountId,
 } from 'flavours/glitch/hooks/useAccountId';
 
-import { CollectionsCreatedByYou } from './overview/created_by_you';
+import { CollectionsCreatedByAccount } from './overview/created_by_account';
 import { CollectionsFeaturingYou } from './overview/featuring_you';
 import classes from './styles.module.scss';
 
@@ -69,11 +74,24 @@ export const Collections: React.FC<{
 
   return (
     <Column bindToDocument={!multiColumn} label={pageTitle}>
-      <ColumnHeader showBackButton multiColumn={multiColumn} />
+      {isRedesignEnabled() ? (
+        <ColumnHeader title={pageTitle} />
+      ) : (
+        <LegacyColumnHeader showBackButton multiColumn={multiColumn} />
+      )}
 
       <Scrollable>
-        <header className={classes.header}>
-          <h1 className={classes.heading}>{pageTitleHtml}</h1>
+        <header
+          className={classNames(
+            classes.header,
+            isRedesignEnabled() && classes.headerRedesign,
+          )}
+        >
+          {!isRedesignEnabled() && (
+            <NavigationFocusTarget as='h1' className={classes.heading}>
+              {pageTitleHtml}
+            </NavigationFocusTarget>
+          )}
           <TabList plain>
             <TabLink exact to={`/@${account?.acct}/collections`}>
               {intl.formatMessage(createdByTabMessage, {
@@ -91,7 +109,7 @@ export const Collections: React.FC<{
           </TabList>
         </header>
         <Switch>
-          <Route exact path={path} component={CollectionsCreatedByYou} />
+          <Route exact path={path} component={CollectionsCreatedByAccount} />
           <Route
             exact
             path={`${path}/featuring-you`}

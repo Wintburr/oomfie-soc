@@ -703,7 +703,6 @@ ar:
       action_log: سجل المراجعة
       action_taken_by: تم اتخاذ الإجراء مِن طرف
       actions:
-        delete_description_html: سيتم حذف المناشير المبلّغ عنها وسيتم تسجيل إنذار لمساعدتك في التعامل المستقبلي مع أي مخالفة جديدة من نفس الحساب.
         mark_as_sensitive_description_html: سيتم تحديد الوسائط في المناشير المبلّغ عنها على أنها محتوى حساس وسيتم تسجيل إنذار لمساعدتك في التعامل المستقبلي مع أي مخالفة جديدة من نفس الحساب.
         other_description_html: عرض المزيد من الخيارات للتحكم في االحسابات وتخصيص التواصل مع الحسابات المُبلّغ عنها.
         resolve_description_html: ولن يُتخذ أي إجراء ضد الحساب المبلّغ عنه، ولن تسلَّط عليه أية عقوبة، وسوف يُغلق التقرير.
@@ -729,7 +728,6 @@ ar:
       confirm: تأكيد
       confirm_action: تأكيد اتخاذ إجراء إشراف على @%{acct}
       created_at: ذكرت
-      delete_and_resolve: احذف المنشورات
       forwarded: أُعيد توجيهه
       forwarded_replies_explanation: هذا التقرير من مستخدم عن بُعد وحول محتوى عن بُعد. تم تحويله إليك لأن المحتوى المُبلَغ عنه هو ردّ على أحد مستخدميك.
       forwarded_to: أُعيد توجيهه إلى %{domain}
@@ -908,11 +906,6 @@ ar:
       feed_access:
         modes:
           public: الجميع
-      landing_page:
-        values:
-          about: عن
-          local_feed: الخيط المحلي
-          trends: المتداوَلة
       registrations:
         moderation_recommandation: الرجاء التأكد من أن لديك فريق إشراف كافي وفعال قبل فتح التسجيلات للجميع!
         preamble: تحكّم في مَن الذي يمكنه إنشاء حساب على خادمك الخاص.
@@ -1115,7 +1108,6 @@ ar:
           two: شخصان أعادا نشره خلال الأسبوع الماضي
           zero: لا أحد أعاد نشره خلال الأسبوع الماضي
         title: الروابط المتداولة
-        usage_comparison: تمت مشاركته %{today} مرات اليوم، مقارنة بـ %{yesterday} بالأمس
       not_allowed_to_trend: غير مسموح ظهوره في المتداولة
       only_allowed: من سُمِحَ لهم فقط
       pending_review: في انتظار المراجعة
@@ -1164,7 +1156,6 @@ ar:
         trendable: السماح بالظهور تحت المتداولة
         trending_rank: 'المتداولة #%{rank}'
         usable: يمكن استخدامه
-        usage_comparison: تم استخدامه %{today} مرات اليوم، مقارنة بـ %{yesterday} بالأمس
         used_by_over_week:
           few: مستخدَم من قِبل %{count} أشخاص خلال الأسبوع الماضي
           many: مستخدَم من قِبل %{count} شخصا خلال الأسبوع الماضي
@@ -1621,7 +1612,6 @@ ar:
       empty: ملف CSV فارغ
       incompatible_type: غير متوافق مع نوع الاستيراد المحدد
       invalid_csv_file: 'ملف CSV غير صالح. خطأ: %{error}'
-      over_rows_processing_limit: يحتوي على أكثر من %{count} صف
       too_large: الملف كبير جدًا
     failures: فشل
     imported: مستورد
@@ -1814,7 +1804,6 @@ ar:
     incoming_migrations_html: قصد الإنتقال من حساب آخَر إلى هذا يجب عليك أوّلًا <a href="%{path}">إنشاء كُنية حساب</a>.
     moved_msg: إنّ حسابك الآن معاد توجيهه إلى %{acct} ويتم نقل متابِعيك نحوه.
     not_redirecting: حاليا ، حسابك لا يقوم بالتحويل إلى أي حساب آخر.
-    on_cooldown: لقد قمت مؤخرا بترحيل حسابك. سيتاح هذا الإجراء مرة أخرى في غضون %{count} أيام.
     past_migrations: التهجيرات السابقة
     proceed_with_move: انقل مشارِكيك
     redirected_msg: الآن، حسابك موجَّه إلى %{acct}.
@@ -1901,7 +1890,6 @@ ar:
     next: التالي
     older: الأقدَم
     prev: السابق
-    truncate: و
   polls:
     errors:
       already_voted: لقد قمت بالتصويت على استطلاع الرأي هذا مِن قبل
@@ -1970,8 +1958,6 @@ ar:
       account: منشورات للعلن مِن @%{acct}
       tag: 'المنشورات العامة الموسومة #%{hashtag}'
   scheduled_statuses:
-    over_daily_limit: لقد تجاوزتَ حد الـ %{limit} منشورات مُبَرمَجة مسموح بها اليوم
-    over_total_limit: لقد بلغت حد الـ %{limit} مِن المنشورات المبرمَجة
     too_soon: يجب أن يكون التاريخ في المستقبل
   self_destruct:
     lead_html: للأسف، سيتم إغلاق <strong>%{domain}</strong> بشكل دائم. إذا كان لديك حساب هناك، لن تكون قادرًا على الاستمرار في استخدامه، غير أنه يمكنك طلب نسخة احتياطية لبياناتك.

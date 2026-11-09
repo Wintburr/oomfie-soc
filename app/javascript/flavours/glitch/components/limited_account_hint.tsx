@@ -43,7 +43,13 @@ export const LimitedAccountHint: React.FC<{
 
   return (
     <div className='limited-account-hint'>
-      {message}
+      <p>
+        <FormattedMessage
+          id='limited_account_hint.title'
+          defaultMessage='This profile or server has been hidden by the moderators of {domain}.'
+          values={{ domain }}
+        />
+      </p>
       <Button onClick={reveal}>
         <FormattedMessage
           id='limited_account_hint.action'

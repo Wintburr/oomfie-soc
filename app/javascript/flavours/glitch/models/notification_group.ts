@@ -106,6 +106,14 @@ export interface NotificationGroupCollectionUpdate extends BaseNotification<'col
   collection: Collection | null;
 }
 
+type StatusReaction = Omit<Omit<ApiStatusReactionJSON, 'account'>, 'count'>;
+
+export interface NotificationGroupReaction
+  extends BaseNotification<'reaction'> {
+  statusId: string | undefined;
+  reaction: StatusReaction | undefined;
+}
+
 export type NotificationGroup =
   | NotificationGroupFavourite
   | NotificationGroupReaction

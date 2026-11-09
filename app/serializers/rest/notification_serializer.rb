@@ -19,6 +19,7 @@ class REST::NotificationSerializer < ActiveModel::Serializer
   belongs_to :account_warning, key: :moderation_warning, if: :moderation_warning_event?, serializer: REST::AccountWarningSerializer
   belongs_to :status_reaction, key: :reaction, if: :reaction_type?, serializer: REST::StatusReactionSerializer
   belongs_to :target_collection, key: :collection, if: :collection_type?, serializer: REST::CollectionSerializer
+  belongs_to :status_reaction, key: :reaction, if: :reaction_type?, serializer: REST::StatusReactionSerializer
 
   def id
     object.id.to_s

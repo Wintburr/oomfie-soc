@@ -15,9 +15,9 @@ import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
 import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
 import { blockAccount } from 'mastodon/actions/accounts';
 import { closeModal } from 'mastodon/actions/modal';
+import { NavigationFocusTarget } from 'mastodon/components/navigation_focus_target';
 import { Button } from 'mastodon/components/button';
 import { Icon } from 'mastodon/components/icon';
-import { areCollectionsEnabled } from '../../collections/utils';
 
 export const BlockModal = ({ accountId, acct }) => {
   const dispatch = useDispatch();
@@ -47,7 +47,9 @@ export const BlockModal = ({ accountId, acct }) => {
           </div>
 
           <div>
-            <h1><FormattedMessage id='block_modal.title' defaultMessage='Block user?' /></h1>
+            <NavigationFocusTarget as='h1'>
+              <FormattedMessage id='block_modal.title' defaultMessage='Block user?' />
+            </NavigationFocusTarget>
             <p>@{acct}</p>
           </div>
         </div>
@@ -73,12 +75,10 @@ export const BlockModal = ({ accountId, acct }) => {
             <div><FormattedMessage id='block_modal.they_cant_mention' defaultMessage="You can't mention, follow, or quote each other." /></div>
           </li>
 
-          {areCollectionsEnabled() && 
-            <li>
-              <div className='safety-action-modal__bullet-points__icon'><Icon icon={CollectionsIcon} /></div>
-              <div><FormattedMessage id='block_modal.no_collections' defaultMessage="Neither of you can add each other to collections. You'll be automatically removed from each others' existing collections, if applicable." /></div>
-            </li>
-          }
+          <li>
+            <div className='safety-action-modal__bullet-points__icon'><Icon icon={CollectionsIcon} /></div>
+            <div><FormattedMessage id='block_modal.no_collections' defaultMessage="Neither of you can add each other to collections. You'll be automatically removed from each others' existing collections, if applicable." /></div>
+          </li>
         </ul>
       </div>
 
@@ -97,14 +97,14 @@ export const BlockModal = ({ accountId, acct }) => {
 
         <div className='safety-action-modal__actions'>
           {domain && (
-            <button onClick={handleToggleLearnMore} className='link-button'>
+            <button type='button' onClick={handleToggleLearnMore} className='link-button'>
               {expanded ? <FormattedMessage id='block_modal.show_less' defaultMessage='Show less' /> : <FormattedMessage id='block_modal.show_more' defaultMessage='Show more' />}
             </button>
           )}
 
           <div className='spacer' />
 
-          <button onClick={handleCancel} className='link-button'>
+          <button type='button' onClick={handleCancel} className='link-button'>
             <FormattedMessage id='confirmation_modal.cancel' defaultMessage='Cancel' />
           </button>
 

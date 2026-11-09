@@ -27,7 +27,7 @@ RSpec.describe 'Reactions', :inline_jobs do
         expect(user.account.reacted?(status, '😂')).to be true
 
         expect(response.parsed_body).to match(
-          a_hash_including(id: status.id.to_s, reactions_count: 1, reactions: [{ count: 1, me: true, name: '😂' }])
+          a_hash_including(id: status.id.to_s, reactions: [{ count: 1, me: true, name: '😂' }])
         )
       end
     end
@@ -98,7 +98,7 @@ RSpec.describe 'Reactions', :inline_jobs do
         expect(user.account.reacted?(status, '😂')).to be false
 
         expect(response.parsed_body).to match(
-          a_hash_including(id: status.id.to_s, reactions_count: 0, reactions: [])
+          a_hash_including(id: status.id.to_s, reactions: [])
         )
       end
     end
@@ -119,7 +119,7 @@ RSpec.describe 'Reactions', :inline_jobs do
         expect(user.account.reacted?(status, '😂')).to be false
 
         expect(response.parsed_body).to match(
-          a_hash_including(id: status.id.to_s, reactions_count: 0, reactions: [])
+          a_hash_including(id: status.id.to_s, reactions: [])
         )
       end
     end

@@ -15,7 +15,7 @@ import {
 import { Hotkeys } from 'flavours/glitch/components/hotkeys';
 import type { IconProp } from 'flavours/glitch/components/icon';
 import { Icon } from 'flavours/glitch/components/icon';
-import { StatusQuoteManager } from 'flavours/glitch/components/status_quoted';
+import { Status } from 'flavours/glitch/components/status';
 import { getStatusHidden } from 'flavours/glitch/selectors/filters';
 import { useAppSelector, useAppDispatch } from 'flavours/glitch/store';
 
@@ -105,14 +105,14 @@ export const NotificationWithStatus: React.FC<{
         )}
         tabIndex={0}
       >
-        <div className='notification-ungrouped__header'>
+        <h2 className='notification-ungrouped__header'>
           <div className='notification-ungrouped__header__icon'>
             <Icon icon={icon} id={iconId} />
           </div>
           <span>{label}</span>
-        </div>
+        </h2>
 
-        <StatusQuoteManager
+        <Status
           id={statusId}
           contextType='notifications'
           withDismiss

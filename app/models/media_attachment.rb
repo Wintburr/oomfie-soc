@@ -42,6 +42,8 @@ class MediaAttachment < ApplicationRecord
 
   MAX_DESCRIPTION_HARD_LENGTH_LIMIT = 30_000
   MAX_DESCRIPTION_LENGTH = 10_000
+  MAX_DESCRIPTION_LENGTH = 10_000
+  MAX_DESCRIPTION_HARD_LENGTH_LIMIT = 10_000
 
   IMAGE_LIMIT = (ENV['MAX_IMAGE_SIZE'] || 100.megabytes).to_i
   VIDEO_LIMIT = (ENV['MAX_VIDEO_SIZE'] || 300.megabytes).to_i
@@ -50,7 +52,7 @@ class MediaAttachment < ApplicationRecord
   MAX_VIDEO_FRAME_RATE   = 120
   MAX_VIDEO_FRAMES       = 72_000 # 10 minutes at 120 fps
 
-  IMAGE_FILE_EXTENSIONS = %w(.jpg .jpeg .png .gif .webp .heic .heif .avif).freeze
+  IMAGE_FILE_EXTENSIONS = %w(.jpg .jpeg .png .gif .webp).freeze # NOTE: HEIC/HEIF/AVIF are temporarily disabled for security reasons.
   VIDEO_FILE_EXTENSIONS = %w(.webm .mp4 .m4v .mov).freeze
   AUDIO_FILE_EXTENSIONS = %w(.ogg .oga .mp3 .wav .flac .opus .aac .m4a .3gp .wma).freeze
 
@@ -61,11 +63,11 @@ class MediaAttachment < ApplicationRecord
     small
   ).freeze
 
-  IMAGE_MIME_TYPES             = %w(image/jpeg image/png image/gif image/heic image/heif image/webp image/avif).freeze
-  IMAGE_CONVERTIBLE_MIME_TYPES = %w(image/heic image/heif image/avif).freeze
-  VIDEO_MIME_TYPES             = %w(video/webm video/mp4 video/quicktime video/ogg audio/webm).freeze
-  VIDEO_CONVERTIBLE_MIME_TYPES = %w(video/quicktime).freeze
-  AUDIO_MIME_TYPES             = %w(audio/wave audio/wav audio/x-wav audio/x-pn-wave audio/vnd.wave audio/ogg audio/vorbis audio/mpeg audio/mp3 audio/flac audio/aac audio/m4a audio/x-m4a audio/mp4 audio/3gpp video/x-ms-asf audio/opus).freeze
+  IMAGE_MIME_TYPES             = %w(image/jpeg image/png image/gif image/webp).freeze # NOTE: HEIC/HEIF/AVIF are temporarily disabled for security reasons.
+  IMAGE_CONVERTIBLE_MIME_TYPES = [].freeze # NOTE: HEIC/HEIF/AVIF are temporarily disabled for security reasons.
+  VIDEO_MIME_TYPES             = %w(video/webm video/mp4 video/quicktime video/ogg).freeze
+  VIDEO_CONVERTIBLE_MIME_TYPES = %w(video/webm video/quicktime).freeze
+  AUDIO_MIME_TYPES             = %w(audio/wave audio/wav audio/x-wav audio/x-pn-wave audio/vnd.wave audio/ogg audio/vorbis audio/mpeg audio/mp3 audio/webm audio/flac audio/aac audio/m4a audio/x-m4a audio/mp4 audio/3gpp video/x-ms-asf).freeze
 
   BLURHASH_OPTIONS = {
     x_comp: 8,
@@ -207,7 +209,7 @@ class MediaAttachment < ApplicationRecord
   remotable_attachment :thumbnail, IMAGE_LIMIT, suppress_errors: true, download_on_assign: false
 
   validates :account, presence: true
-  validates :description, length: { maximum: MAX_DESCRIPTION_LENGTH }
+  validates :description, length: { maximum: MAX_DESCRIPTION_LENGTH }, if: :local?
   validates :file, presence: true, if: :local?
   validates :thumbnail, absence: true, if: -> { local? && !audio_or_video? }
 
@@ -244,6 +246,10 @@ class MediaAttachment < ApplicationRecord
 
   def discarded?
     status&.discarded? || (status_id.present? && status.nil?)
+  end
+
+  def on_hold?
+    discarded? || account&.suspended?
   end
 
   def significantly_changed?

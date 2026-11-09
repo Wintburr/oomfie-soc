@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
-import { ListItemLink, ListItemWrapper } from '@/mastodon/components/list_item';
+import { LockupLink, LockupWrapper } from '@/mastodon/components/lockup';
 import WarningIcon from '@/material-icons/400-24px/warning.svg?react';
 import type { ApiCollectionJSON } from 'mastodon/api_types/collections';
 import { AvatarById } from 'mastodon/components/avatar';
@@ -47,6 +47,9 @@ export interface CollectionLockupProps {
   withTimestamp?: boolean;
   sideContent?: React.ReactNode;
   className?: string;
+  headingLevel?: 'h2' | 'h3' | 'h4';
+  titleId?: string;
+  subtitleId?: string;
 }
 
 export const CollectionLockup: React.FC<CollectionLockupProps> = ({
@@ -54,13 +57,53 @@ export const CollectionLockup: React.FC<CollectionLockupProps> = ({
   withAuthorHandle = true,
   withTimestamp,
   sideContent,
+  headingLevel = 'h3',
+  titleId,
+  subtitleId,
   className,
 }) => {
   const { id, name } = collection;
+
+  return (
+    <LockupWrapper
+      className={classNames(classes.wrapper, className)}
+      icon={
+        <AvatarGrid
+          accountIds={collection.items.map((item) => item.account_id)}
+          sensitive={collection.sensitive}
+        />
+      }
+      sideContent={sideContent}
+    >
+      <LockupLink
+        as={headingLevel}
+        to={getCollectionPath(id)}
+        id={titleId}
+        subtitle={
+          <CollectionInfo
+            collection={collection}
+            withAuthorHandle={withAuthorHandle}
+            withTimestamp={withTimestamp}
+          />
+        }
+        subtitleId={subtitleId}
+      >
+        {name}
+      </LockupLink>
+    </LockupWrapper>
+  );
+};
+
+export const CollectionInfo: React.FC<
+  Pick<
+    CollectionLockupProps,
+    'collection' | 'withAuthorHandle' | 'withTimestamp'
+  >
+> = ({ collection, withAuthorHandle, withTimestamp }) => {
   const authorAccount = useAccount(collection.account_id);
   const authorHandle = useAccountHandle(authorAccount, domain);
 
-  const collectionInfo = (
+  return (
     <ul>
       {collection.sensitive && (
         <li className='sr-only'>
@@ -97,26 +140,5 @@ export const CollectionLockup: React.FC<CollectionLockupProps> = ({
         />
       )}
     </ul>
-  );
-
-  return (
-    <ListItemWrapper
-      className={classNames(classes.wrapper, className)}
-      icon={
-        <AvatarGrid
-          accountIds={collection.items.map((item) => item.account_id)}
-          sensitive={collection.sensitive}
-        />
-      }
-      sideContent={sideContent}
-    >
-      <ListItemLink
-        as='h3'
-        to={getCollectionPath(id)}
-        subtitle={collectionInfo}
-      >
-        {name}
-      </ListItemLink>
-    </ListItemWrapper>
   );
 };

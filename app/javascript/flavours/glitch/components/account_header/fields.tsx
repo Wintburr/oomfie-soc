@@ -108,11 +108,9 @@ const FieldCard: FC<{
 }> = ({ htmlHandlers, field }) => {
   const intl = useIntl();
   const {
-    name,
     name_emojified,
     nameHasEmojis,
     value_emojified,
-    value_plain,
     valueHasEmojis,
     verified_at,
   } = field;
@@ -138,8 +136,7 @@ const FieldCard: FC<{
       )}
       label={
         <FieldHTML
-          text={name}
-          textEmojified={name_emojified}
+          text={name_emojified}
           textHasCustomEmoji={nameHasEmojis}
           className='translate'
           isOverflowing={isLabelOverflowing}
@@ -149,8 +146,7 @@ const FieldCard: FC<{
       }
       value={
         <FieldHTML
-          text={value_plain}
-          textEmojified={value_emojified}
+          text={value_emojified}
           textHasCustomEmoji={valueHasEmojis}
           isOverflowing={isValueOverflowing}
           onOverflowClick={handleOverflowClick}
@@ -175,7 +171,6 @@ const FieldCard: FC<{
 
 type FieldHTMLProps = {
   text: string;
-  textEmojified: string;
   textHasCustomEmoji: boolean;
   isOverflowing?: boolean;
   onOverflowClick?: () => void;
@@ -183,9 +178,7 @@ type FieldHTMLProps = {
 
 const FieldHTML: FC<FieldHTMLProps> = ({
   className,
-  extraEmojis,
   text,
-  textEmojified,
   textHasCustomEmoji,
   isOverflowing,
   onOverflowClick,
@@ -198,7 +191,7 @@ const FieldHTML: FC<FieldHTMLProps> = ({
   const html = (
     <EmojiHTML
       as='span'
-      htmlString={textEmojified}
+      htmlString={text}
       className={className}
       onElement={handleElement}
       data-contents
@@ -227,7 +220,7 @@ const FieldHTML: FC<FieldHTMLProps> = ({
 };
 
 function useColumnWrap() {
-  const listRef = useRef<HTMLDListElement | null>(null);
+  const listRef = useRef<HTMLDListElement>(null);
 
   const handleRecalculate = useCallback(() => {
     const listEle = listRef.current;
@@ -324,9 +317,10 @@ function useColumnWrap() {
       if (element) {
         listRef.current = element;
         observer.observe(element);
+        handleRecalculate();
       }
     },
-    [observer],
+    [handleRecalculate, observer],
   );
 
   return { wrapperRef: wrapperRefCallback };
@@ -336,17 +330,19 @@ function useFieldOverflow() {
   const [isLabelOverflowing, setIsLabelOverflowing] = useState(false);
   const [isValueOverflowing, setIsValueOverflowing] = useState(false);
 
-  const wrapperRef = useRef<HTMLElement | null>(null);
+  const wrapperRef = useRef<HTMLElement>(null);
 
   const handleRecalculate = useCallback(() => {
     const wrapperEle = wrapperRef.current;
     if (!wrapperEle) return;
 
     const wrapperStyles = getComputedStyle(wrapperEle);
-    const maxWidth =
-      wrapperEle.offsetWidth -
-      (parseFloat(wrapperStyles.paddingLeft) +
-        parseFloat(wrapperStyles.paddingRight));
+    const nonContentWidth =
+      parseFloat(wrapperStyles.paddingLeft) +
+      parseFloat(wrapperStyles.paddingRight) +
+      parseFloat(wrapperStyles.borderLeftWidth) +
+      parseFloat(wrapperStyles.borderRightWidth);
+    const availableContentWidth = wrapperEle.offsetWidth - nonContentWidth;
 
     const label = wrapperEle.querySelector<HTMLSpanElement>(
       'dt > [data-contents]',
@@ -355,8 +351,12 @@ function useFieldOverflow() {
       'dd > [data-contents]',
     );
 
-    setIsLabelOverflowing(label ? label.scrollWidth > maxWidth : false);
-    setIsValueOverflowing(value ? value.scrollWidth > maxWidth : false);
+    setIsLabelOverflowing(
+      label ? label.scrollWidth > availableContentWidth : false,
+    );
+    setIsValueOverflowing(
+      value ? value.scrollWidth > availableContentWidth : false,
+    );
   }, []);
 
   const observer = useResizeObserver(handleRecalculate);

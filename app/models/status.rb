@@ -309,10 +309,6 @@ class Status < ApplicationRecord
     end
   end
 
-  def media_attachments_limit
-    local? ? MEDIA_ATTACHMENTS_LIMIT : REMOTE_MEDIA_ATTACHMENTS_LIMIT
-  end
-
   def ordered_media_attachments
     if ordered_media_attachment_ids.nil?
       # NOTE: sort Ruby-side to avoid hitting the database when the status is
@@ -342,6 +338,10 @@ class Status < ApplicationRecord
 
   def quotes_count
     status_stat&.quotes_count || 0
+  end
+
+  def reactions_count
+    status_stat&.reactions_count || 0
   end
 
   # Reblogs count received from an external instance
@@ -462,15 +462,6 @@ class Status < ApplicationRecord
     end
   end
 
-  def marked_local_only?
-    # match both with and without U+FE0F (the emoji variation selector)
-    /#{local_only_emoji}\ufe0f?\z/.match?(content)
-  end
-
-  def local_only_emoji
-    '👁'
-  end
-
   def status_stat
     super || build_status_stat
   end
@@ -533,7 +524,7 @@ class Status < ApplicationRecord
     if reblog?
       self.local_only = reblog.local_only
     elsif local_only.nil?
-      self.local_only = marked_local_only?
+      self.local_only = false
     end
   end
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from '@unhead/react/helmet';
 
 import Base from 'flavours/glitch/components/modal_root';
 import { AltTextModal } from 'flavours/glitch/features/alt_text_modal';
@@ -85,6 +85,7 @@ export const MODAL_COMPONENTS = {
   'DOMAIN_BLOCK': DomainBlockModal,
   'REPORT': ReportModal,
   'REPORT_COLLECTION': ReportCollectionModal,
+  'COLLECTION_ADDER': () => import('@/flavours/glitch/features/collection_adder').then(module => ({ default: module.CollectionAdder })),
   'SHARE_COLLECTION': () => import('@/flavours/glitch/features/collections/components/share_modal').then(module => ({ default: module.CollectionShareModal })),
   'REVOKE_COLLECTION_INCLUSION': () => import('@/flavours/glitch/features/collections/detail/revoke_collection_inclusion_modal').then(module => ({ default: module.RevokeCollectionInclusionModal })),
   'SETTINGS': SettingsModal,
@@ -115,9 +116,15 @@ export const MODAL_COMPONENTS = {
   'ACCOUNT_EDIT_IMAGE_DELETE': accountEditModal('ImageDeleteModal'),
   'ACCOUNT_EDIT_IMAGE_UPLOAD': accountEditModal('ImageUploadModal'),
   'ACCOUNT_HIDE_FEATURED_TAB': () => import('@/flavours/glitch/features/ui/components/confirmation_modals/hide_featured_tab').then(module => ({ default: module.ConfirmHideFeaturedTabModal })),
+  'COMPOSER_DRAFT_DELETE': () => import('@/flavours/glitch/features/compose/redesign/modal_cancel'),
+  'COMPOSER_REARRANGE': () => import('@/flavours/glitch/features/compose/redesign/modal_rearrange'),
+  'COMPOSER_SWITCH_TO_POST': () => import('@/flavours/glitch/features/compose/redesign/modal_switch'),
+  'COMPOSER_ADD_QUOTE': () => import('@/flavours/glitch/features/compose/redesign/modal_quote'),
+  'NOTIFICATION_SETTINGS': () => import('@/flavours/glitch/features/notifications_v2/components/notification_settings_modal'),
+  'HASHTAG_SETTINGS': () => import('@/flavours/glitch/features/hashtag_timeline/components/column_settings_modal'),
 };
 
-/** @arg {keyof import('@/flavours/glitch/features/account_edit/modals')} type */
+/** @param {keyof import('@/flavours/glitch/features/account_edit/modals')} type */
 function accountEditModal(type) {
   return () => import('@/flavours/glitch/features/account_edit/modals').then(module => ({ default: module[type] }));
 }
