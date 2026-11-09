@@ -189,8 +189,7 @@ export type ApiNotificationJSON =
   | ModerationWarningNotificationJSON
   | ReactionNotificationJSON
   | AddedToCollectionNotificationJSON
-  | CollectionUpdateNotificationJSON
-  | ReactionNotificationJSON;
+  | CollectionUpdateNotificationJSON;
 
 export type ApiNotificationGroupJSON =
   | SimpleNotificationGroupJSON
@@ -201,8 +200,7 @@ export type ApiNotificationGroupJSON =
   | AnnualReportNotificationGroupJSON
   | ReactionNotificationGroupJSON
   | AddedToCollectionNotificationGroupJSON
-  | CollectionUpdateNotificationGroupJSON
-  | ReactionNotificationGroupJSON;
+  | CollectionUpdateNotificationGroupJSON;
 
 export interface ApiNotificationGroupsResultJSON {
   accounts: ApiAccountJSON[];

@@ -24,8 +24,9 @@ export const NotificationReaction: React.FC<{
 }> = ({ notification, unread }) => {
   const statusAccount = useAppSelector(
     (state) =>
-      state.accounts.get(state.statuses.getIn([notification.statusId, 'account']) as string)
-        ?.acct,
+      state.accounts.get(
+        state.statuses.getIn([notification.statusId, 'account']) as string,
+      )?.acct,
   );
 
   const labelRenderer = useCallback<LabelRenderer>(
@@ -96,7 +97,9 @@ export const NotificationReaction: React.FC<{
       count={notification.notifications_count}
       labelRenderer={labelRenderer}
       labelSeeMoreHref={
-        statusAccount ? `/@${statusAccount}/${notification.statusId}/reactions` : undefined
+        statusAccount
+          ? `/@${statusAccount}/${notification.statusId}/reactions`
+          : undefined
       }
       unread={unread}
     />

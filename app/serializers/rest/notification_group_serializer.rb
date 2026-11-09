@@ -22,7 +22,6 @@ class REST::NotificationGroupSerializer < ActiveModel::Serializer
   belongs_to :generated_annual_report, key: :annual_report, if: :annual_report_event?, serializer: REST::AnnualReportEventSerializer
   belongs_to :status_reaction, key: :reaction, if: :single_reaction?, serializer: REST::StatusReactionSerializer
   belongs_to :target_collection, key: :collection, if: :collection_type?, serializer: REST::CollectionSerializer
-  belongs_to :status_reaction, key: :reaction, if: :single_reaction?, serializer: REST::StatusReactionSerializer
 
   def sample_account_ids
     object.sample_accounts.pluck(:id).map(&:to_s)

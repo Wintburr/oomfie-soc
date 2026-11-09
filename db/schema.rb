@@ -1246,10 +1246,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_094651) do
 
   create_table "status_reactions", force: :cascade do |t|
     t.bigint "account_id", null: false
-    t.bigint "status_id", null: false
-    t.string "name", default: "", null: false
-    t.bigint "custom_emoji_id"
     t.datetime "created_at", null: false
+    t.bigint "custom_emoji_id"
+    t.string "name", default: "", null: false
+    t.bigint "status_id", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id", "status_id", "name"], name: "index_status_reactions_on_account_id_and_status_id", unique: true
     t.index ["custom_emoji_id"], name: "index_status_reactions_on_custom_emoji_id"

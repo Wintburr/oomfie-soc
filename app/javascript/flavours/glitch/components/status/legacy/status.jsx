@@ -793,13 +793,6 @@ class Status extends ImmutablePureComponent {
             }
 
             {(showActions && !isQuotedPost) &&
-              <StatusReactions
-                id={status.get('id')}
-                reactions={status.get('reactions').toArray()}
-              />
-            }
-
-            {(showActions && !isQuotedPost) &&
               <StatusActionBar
                 status={status}
                 account={status.get('account')}

@@ -309,6 +309,10 @@ class Status < ApplicationRecord
     end
   end
 
+  def media_attachments_limit
+    local? ? MEDIA_ATTACHMENTS_LIMIT : REMOTE_MEDIA_ATTACHMENTS_LIMIT
+  end
+
   def ordered_media_attachments
     if ordered_media_attachment_ids.nil?
       # NOTE: sort Ruby-side to avoid hitting the database when the status is
@@ -338,10 +342,6 @@ class Status < ApplicationRecord
 
   def quotes_count
     status_stat&.quotes_count || 0
-  end
-
-  def reactions_count
-    status_stat&.reactions_count || 0
   end
 
   # Reblogs count received from an external instance
