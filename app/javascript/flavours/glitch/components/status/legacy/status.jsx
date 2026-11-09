@@ -55,7 +55,7 @@ export const textForScreenReader = ({intl, status, rebloggedByText = false, isQu
     isQuote ? intl.formatMessage(messages.quote_noun) : undefined,
     displayName.length === 0 ? status.getIn(['account', 'acct']).split('@')[0] : displayName,
     spoilerText && !expanded ? spoilerText : contentText,
-    !!status.get('quote') ? intl.formatMessage(messages.contains_quote) : undefined,
+    status.get('quote') ? intl.formatMessage(messages.contains_quote) : undefined,
     intl.formatDate(status.get('created_at'), { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }),
     status.getIn(['account', 'acct']),
     rebloggedByText,
@@ -85,7 +85,6 @@ class Status extends ImmutablePureComponent {
   static contextType = SensitiveMediaContext;
 
   static propTypes = {
-    identity: identityContextPropShape,
     containerId: PropTypes.string,
     id: PropTypes.string,
     status: ImmutablePropTypes.map,
@@ -485,7 +484,6 @@ class Status extends ImmutablePureComponent {
       onOpenMedia,
       notification,
       history,
-      identity,
       ...other
     } = this.props;
     let attachments = null;
@@ -787,14 +785,12 @@ class Status extends ImmutablePureComponent {
             {/* This is a glitch-soc addition to have a placeholder */}
             {!expanded && <MentionsPlaceholder status={status} />}
 
-            <StatusReactions
-              statusId={status.get('id')}
-              reactions={status.get('reactions')}
-              numVisible={visibleReactions}
-              addReaction={this.props.onReactionAdd}
-              removeReaction={this.props.onReactionRemove}
-              canReact={this.props.identity.signedIn}
-            />
+            {(showActions && !isQuotedPost) &&
+              <StatusReactions
+                id={status.get('id')}
+                reactions={status.get('reactions').toArray()}
+              />
+            }
 
             {(showActions && !isQuotedPost) &&
               <StatusReactions

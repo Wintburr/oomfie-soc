@@ -239,6 +239,12 @@
   border-color: var(--color-border-on-bg-warning-softer);
 }
 
+.simple_form .chuckya_only {
+  color: var(--color-text-brand-soft);
+  background-color: var(--color-bg-brand-softer);
+  border-color: var(--color-border-on-bg-brand-softer);
+}
+
 .directory__tag .trends__item__current {
   width: auto;
 }

@@ -187,7 +187,7 @@ export const connectCommunityStream = ({ onlyMedia } = {}) =>
 /**
  * @param {Object} options
  * @param {boolean} [options.onlyMedia]
- * @returns {function(): void}
+ * @returns {StreamThunk}
  */
 export const connectBubbleStream = ({ onlyMedia } = {}) =>
   connectTimelineStream(`bubble${onlyMedia ? ':media' : ''}`, `public:bubble${onlyMedia ? ':media' : ''}`, {}, {

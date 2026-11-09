@@ -23,6 +23,8 @@ import { useAppDispatch, useAppSelector } from 'flavours/glitch/store';
 
 import { AudioVisualizer } from '../../audio/visualizer';
 
+const colCount = (size: number) => Math.max(Math.ceil(Math.sqrt(size)), 2);
+
 export const Upload: React.FC<{
   id: string;
   dragging?: boolean;

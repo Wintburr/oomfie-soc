@@ -8,4 +8,5 @@ export interface ApiStatusReactionJSON {
   count?: number;
   me?: boolean;
   account?: ApiAccountJSON;
+  me?: boolean;
 }
