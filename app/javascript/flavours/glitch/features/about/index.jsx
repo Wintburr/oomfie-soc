@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { domain } from 'flavours/glitch/initial_state';
 
 import { injectIntl } from '@/flavours/glitch/components/intl';
-import { fetchServer, fetchExtendedDescription, fetchDomainBlocks, fetchBubbleDomains  } from 'flavours/glitch/actions/server';
+import { fetchServer, fetchExtendedDescription, fetchDomainBlocks, fetchBubbleDomains } from 'flavours/glitch/actions/server';
 import { Account } from 'flavours/glitch/components/account';
 import { Column } from '@/flavours/glitch/components/column';
 import { NavigationFocusTarget } from 'flavours/glitch/components/navigation_focus_target';
